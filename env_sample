@@ -1,0 +1,6 @@
+# development
+DATABASE_URL=postgres:///kinohub
+
+# production required
+SECRET_KEY=
+ALLOWED_HOSTS=127.0.0.1,
