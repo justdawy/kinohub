@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 
 class Genre(models.Model):
     name = models.CharField(
@@ -33,6 +34,8 @@ class Movie(models.Model):
     actors = models.ManyToManyField(
             Actor, help_text="Select an actor for this movie"
     )
+    created_on = models.DateTimeField("Date published", default=now)
+    changed_on = models.DateTimeField("Date edited", auto_now=True)
 
     def __str__(self):
         return self.title
