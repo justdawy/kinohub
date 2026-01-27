@@ -1,6 +1,15 @@
 from django.db import models
 from django.utils.timezone import now
 
+class Category(models.Model):
+    name = models.CharField(
+        max_length=100,
+        unique=True
+    )
+
+    def __str__(self):
+        return self.name
+
 class Genre(models.Model):
     name = models.CharField(
         max_length=100,
@@ -22,6 +31,7 @@ class Actor(models.Model):
         return self.name
 
 class Movie(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.RESTRICT, default=1)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)
