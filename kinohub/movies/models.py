@@ -2,6 +2,10 @@ from django.db import models
 from django.utils.timezone import now
 
 class Category(models.Model):
+    icon = models.CharField(
+        max_length=24,
+        default="fa-film"
+    )
     name = models.CharField(
         max_length=100,
         unique=True
