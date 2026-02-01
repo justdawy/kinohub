@@ -35,7 +35,7 @@ class Actor(models.Model):
         return self.name
 
 class Movie(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.RESTRICT, default=1)
+    category = models.ForeignKey(Category, on_delete=models.RESTRICT, default=1, related_name="movies")
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)

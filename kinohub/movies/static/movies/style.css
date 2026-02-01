@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
+
+
+.form-control,
+.form-select {
+  background-color: #2b250663;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #ffc107;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 193, 7, 0.6);
+  background-color: #2b250663;
+}
+
+.filter-segmented-bar .btn-outline-primary {
+  background-color: #2d3238;
+  border-color: #4a5057;
+  color: #fff;
+}
+
+.filter-segmented-bar .btn-check:checked+.btn-outline-primary {
+  border-color: #ffc107;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 193, 7, 0.6);
+  background-color: #2b250663;
+}
+
+.filter-segmented-bar .btn-outline-primary:hover {
+  background-color: #3d4349;
+  border-color: #ffc107;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(255, 193, 7, 0.6);
+  color: #fff;
+}
+
+.logo {
+  transition: transform 0.6s ease;
+  /* smooth animation */
+  display: block;
+}
+
+.logo-link:hover .logo {
+  transform: rotate(360deg);
+}
+
+.dropdown-item:active,
+.form-select:active {
+  background-color: rgb(33, 37, 41)
+}
+
+.ctf-pl-title {
+  color: #ffc107;
+}
+
+
+.modal-content {
+  opacity: 0.95;
+}
+
+body {
+
+  font-family: 'Open Sans', sans-serif;
+
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-image: url("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwallpapercave.com%2Fwp%2Fwp3238598.jpg&f=1&nofb=1&ipt=6e5914807e2ace8ca09d12353960d1b5d131bec03f9597c0ba1880e4a18392e1");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  /* optional */
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 22, 28, 0.9);
+  z-index: -1;
+}
+
+/* Card */
+.film-card {
+  width: 144px;
+
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Poster */
+.film-poster {
+  position: relative;
+  width: 144px;
+  height: 205px;
+  background: #111;
+}
+
+.film-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Badge */
+.badge-top {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #ffc107;
+  color: #000;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 6px;
+  border-radius: 6px;
+}
+
+.badge-quality {
+  position: absolute;
+  top: 32px;
+  left: 8px;
+  background: #ffc107;
+  color: #000;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 6px;
+  border-radius: 6px;
+}
+.badge-imdb {
+  position: absolute;
+  top: 58px;
+  left: 8px;
+  background: #ffc107;
+  color: #000;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 6px;
+  border-radius: 6px;
+}
+
+/* Card body */
+.film-body {
+  padding: 8px;
+  border-top: 1px solid rgba(255, 193, 7, 0.6);
+  background: rgba(255, 196, 4, 0.259);
+}
+
+/* Title */
+.film-title {
+  font-size: 13px;
+  line-height: 1.2;
+  color: #e5e5e5;
+  text-align: center;
+
+  /* clamp to 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ---------- PLAY BUTTON ---------- */
+
+.play-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.play-overlay i {
+  font-size: 38px;
+  color: #ffc107;
+}
+
+/* Show play button on hover */
+.film-card:hover .play-overlay {
+  opacity: 1;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.section-title {
+
+  display: inline-block;
+  color: #ffc107;
+  transition: 0.3s;
+}
+
+.category-title .section-title,
+.category-title .fas {
+  color: inherit;
+  transition: color 0.3s;
+
+}
+
+.category-title:hover {
+  color: goldenrod;
+}
+
+.fas {
+  color: inherit;
+}
+
+.category-title:hover .fas {
+  transform: scale(1.1);
+}
+
+.category-title .fas {
+  transition: color 0.3s, transform 0.3s;
+}
+
+a.category-title {
+  color: #ffc107;
+
+}
+
+
+.row.g-3.film-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  justify-items: center;
+}
+
+.search-filter {
+  padding: 2rem;
+}
+
+.form-range {
+  height: 6px;
+}
+
+.form-check-input:checked {
+    background-color: #ffc107;
+    border-color: goldenrod;
+}

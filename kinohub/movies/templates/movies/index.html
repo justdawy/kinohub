@@ -1,0 +1,44 @@
+{% extends "movies/base.html" %}
+{% block title %}Kinohub — серіали та фільми українською мовою онлайн{% endblock %}
+{% block main %}
+{% for category in categories %}
+<section class="mb-5">
+      <div class="container-fluid">
+    <a class="category-title text-decoration-none" href=""><span class="fs-5 fas {{ category.icon }}"></span>
+      <h5 class="section-title text-uppercase mb-3">{{ category.name }}</h5>
+        </a>
+        <div class="row g-3 film-row">
+          {% for movie in category.movies.all|slice:":8" %}
+          <!-- Card -->
+          <div class="col-auto">
+            <div class="film-card">
+
+              <div class="film-poster">
+            <img src="{{ movie.image_url }}" alt="">
+
+                <!-- Play button -->
+                <div class="play-overlay">
+                  <i class="fa fa-play"></i>
+                </div>
+
+                <!-- Badge -->
+            <!--<span class="badge badge-top">1 сезон</span>-->
+            <span class="badge badge-quality">{{ movie.full_quality }}</span>
+            <span class="badge badge-top">IMDB: {{movie.imdb}}</span>
+              </div>
+
+              <!-- Title  card-body -->
+              <div class="film-body">
+                <div class="film-title">
+              {{ movie.title }}
+                </div>
+              </div>
+            {% endfor %}
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endfor %}
+{% endblock %}

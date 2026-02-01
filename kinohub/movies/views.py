@@ -1,9 +1,14 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.db.models import Prefetch
 
-from movies.models import Movie
+from movies.models import Movie, Category
 
 def index(request):
-    movies = Movie.objects.order_by('-created_on')[:5]
-    output = ', '.join([m.title for m in movies])
-    return HttpResponse('Home page, last added movies:' + output)
+    categories = Category.objects.prefetch_related(
+        Prefetch(
+            "movies",
+            queryset=Movie.objects.order_by("-created_on")
+        )
+    )
+    context = {"categories": categories}
+    return render(request, 'movies/index.html', context=context)
