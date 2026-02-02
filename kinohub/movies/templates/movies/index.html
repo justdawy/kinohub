@@ -2,6 +2,7 @@
 {% block title %}Kinohub — серіали та фільми українською мовою онлайн{% endblock %}
 {% block main %}
 {% for category in categories %}
+{% if category.first_movies|length > 0 %}
 <section class="mb-5">
       <div class="container-fluid">
     <a class="category-title text-decoration-none" href=""><span class="fs-5 fas {{ category.icon }}"></span>
@@ -40,5 +41,6 @@
         </div>
       </div>
     </section>
+{% endif %}
 {% endfor %}
 {% endblock %}

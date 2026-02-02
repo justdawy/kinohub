@@ -10,7 +10,6 @@ def index(request):
         to_attr="first_movies"
     )
     categories = Category.objects.prefetch_related(movies).filter(
-        is_visible_on_home=True
-    )
+        is_visible_on_home=True).order_by("position")
     context = {"categories": categories}
     return render(request, "movies/index.html", context=context)
