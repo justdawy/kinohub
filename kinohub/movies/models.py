@@ -1,10 +1,13 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.timezone import now
+
 
 class Category(models.Model):
     icon = models.CharField(max_length=24, default="fa-film")
     name = models.CharField(max_length=100, unique=True)
-
+    slug = models.SlugField(unique=True)
+    
     is_visible_on_home = models.BooleanField(
         default=True,
         help_text="Select whether you want to display this category on the home page"
@@ -16,6 +19,9 @@ class Category(models.Model):
     
     def __str__(self):
         return self.name
+    
+    def get_absolute_url(self):
+        return reverse("category_detail", kwargs={"slug": self.slug})
 
 class Genre(models.Model):
     name = models.CharField(
@@ -40,6 +46,7 @@ class Actor(models.Model):
 class Movie(models.Model):
     category = models.ForeignKey(Category, on_delete=models.RESTRICT, default=1, related_name="movies")
     title = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True)
     description = models.TextField(blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)
     full_quality = models.CharField(max_length=50, blank=True, null=True)
@@ -57,6 +64,13 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        return reverse("movie_detail", kwargs={
+            "category_slug": self.category.slug,
+            "movie_slug": self.slug
+        })
+    
 
 class Player(models.Model):
     movie = models.ForeignKey(Movie, related_name='players', on_delete=models.CASCADE)

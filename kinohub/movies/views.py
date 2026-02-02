@@ -17,3 +17,9 @@ class IndexView(generic.ListView):
         categories = Category.objects.prefetch_related(movies).filter(
             is_visible_on_home=True).order_by("position")
         return categories
+
+class MovieDetailView(generic.DetailView):
+    model = Movie
+    template_name = "movies/movie_detail.html"
+    slug_field = "slug"
+    slug_url_kwarg = "movie_slug"
