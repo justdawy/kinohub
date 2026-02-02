@@ -8,7 +8,7 @@
       <h5 class="section-title text-uppercase mb-3">{{ category.name }}</h5>
         </a>
         <div class="row g-3 film-row">
-          {% for movie in category.movies.all|slice:":8" %}
+          {% for movie in category.first_movies %}
           <!-- Card -->
           <div class="col-auto">
             <div class="film-card">
@@ -23,8 +23,8 @@
 
                 <!-- Badge -->
             <!--<span class="badge badge-top">1 сезон</span>-->
-            <span class="badge badge-quality">{{ movie.full_quality }}</span>
-            <span class="badge badge-top">IMDB: {{movie.imdb}}</span>
+            <span class="badge badge-top" style="top: 8px;">{{ movie.full_quality }}</span>
+            <span class="badge badge-top" style="top: 32px;">IMDB: {{movie.imdb}}</span>
               </div>
 
               <!-- Title  card-body -->
@@ -33,9 +33,9 @@
               {{ movie.title }}
                 </div>
               </div>
-            {% endfor %}
             </div>
           </div>
+          {% endfor %}
           </div>
         </div>
       </div>

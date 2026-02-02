@@ -110,30 +110,6 @@ body::before {
 /* Badge */
 .badge-top {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  background: #ffc107;
-  color: #000;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 6px;
-  border-radius: 6px;
-}
-
-.badge-quality {
-  position: absolute;
-  top: 32px;
-  left: 8px;
-  background: #ffc107;
-  color: #000;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 6px;
-  border-radius: 6px;
-}
-.badge-imdb {
-  position: absolute;
-  top: 58px;
   left: 8px;
   background: #ffc107;
   color: #000;

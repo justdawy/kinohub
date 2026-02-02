@@ -2,15 +2,18 @@ from django.db import models
 from django.utils.timezone import now
 
 class Category(models.Model):
-    icon = models.CharField(
-        max_length=24,
-        default="fa-film"
-    )
-    name = models.CharField(
-        max_length=100,
-        unique=True
-    )
+    icon = models.CharField(max_length=24, default="fa-film")
+    name = models.CharField(max_length=100, unique=True)
 
+    is_visible_on_home = models.BooleanField(
+        default=True,
+        help_text="Select whether you want to display this category on the home page"
+    )
+    position = models.PositiveIntegerField(
+        default=0,
+        help_text="Order of category on the main page (lower comes first)"
+    )
+    
     def __str__(self):
         return self.name
 
@@ -50,6 +53,7 @@ class Movie(models.Model):
     )
     created_on = models.DateTimeField("Date published", default=now)
     changed_on = models.DateTimeField("Date edited", auto_now=True)
+    
 
     def __str__(self):
         return self.title
