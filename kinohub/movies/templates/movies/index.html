@@ -4,43 +4,48 @@
 {% for category in categories %}
 {% if category.first_movies|length > 0 %}
 <section class="mb-5">
-      <div class="container-fluid">
+  <div class="container-fluid">
     <a class="category-title text-decoration-none" href=""><span class="fs-5 fas {{ category.icon }}"></span>
       <h5 class="section-title text-uppercase mb-3">{{ category.name }}</h5>
-        </a>
-        <div class="row g-3 film-row">
-          {% for movie in category.first_movies %}
-          <!-- Card -->
-          <div class="col-auto">
-            <div class="film-card">
+    </a>
+    <div class="row g-3 film-row">
+      {% for movie in category.first_movies %}
+      <!-- Card -->
+      <div class="col-auto">
+        <a class="text-decoration-none" href="{{ movie.get_absolute_url }}">
+          <div class="film-card">
 
-              <div class="film-poster">
-            <img src="{{ movie.image_url }}" alt="">
+            <div class="film-poster">
 
-                <!-- Play button -->
-                <div class="play-overlay">
-                  <i class="fa fa-play"></i>
-                </div>
+              <img src="{{ movie.image_url }}" alt="">
 
-                <!-- Badge -->
-            <!--<span class="badge badge-top">1 сезон</span>-->
-            <span class="badge badge-top" style="top: 8px;">{{ movie.full_quality }}</span>
-            <span class="badge badge-top" style="top: 32px;">IMDB: {{movie.imdb}}</span>
+              <!-- Play button -->
+              <div class="play-overlay">
+                <i class="fa fa-play"></i>
               </div>
 
-              <!-- Title  card-body -->
-              <div class="film-body">
-                <div class="film-title">
-              {{ movie.title }}
-                </div>
+              <!-- Badge -->
+              <!--<span class="badge badge-top">1 сезон</span>-->
+              <span class="badge badge-top" style="top: 8px;">{{ movie.full_quality }}</span>
+              <span class="badge badge-top" style="top: 32px;">IMDB: {{movie.imdb}}</span>
+
+
+            </div>
+
+            <!-- Title  card-body -->
+            <div class="film-body">
+              <div class="film-title ">
+                {{ movie.title }}
               </div>
             </div>
           </div>
-          {% endfor %}
-          </div>
-        </div>
+        </a>
       </div>
-    </section>
+      {% endfor %}
+    </div>
+  </div>
+  </div>
+</section>
 {% endif %}
 {% endfor %}
 {% endblock %}

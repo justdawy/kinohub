@@ -1,0 +1,149 @@
+{% extends "movies/base.html" %}
+{% load static %}
+{% block title %}{{ movie.title }} ({{ movie.release_year }}) дивитися онлайн українською в HD якості{% endblock %}
+{% block main %}
+<div class="container-fluid">
+    <div class="row">
+        <h2 class="text-white">{{ movie.title }}</h2>
+        <!-- Left column - Poster -->
+        <div class="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3">
+            <img src="{{ movie.image_url }}" alt="{{ movie.title }}" class="img-fluid rounded">
+
+
+
+        </div>
+
+        <!-- Middle column - Info -->
+        <div class="col-12 col-sm-6 col-md-7 col-lg-8 col-xl-9">
+
+            <div class="text-white">
+                <p class="text-warning"><span class="text-muted">Якість:</span> <strong>1080p</strong></p>
+                <p><span class="text-muted">Рік виходу:</span> <span class="text-warning">{{ movie.release_year}}</span></p>
+                {% comment %} <p><span class="text-muted">Країна:</span> <span class="text-warning">{{ movie.country
+                        }}</span></p> {% endcomment %}
+                <p>
+                    <span class="text-muted">Жанр:</span>
+                    {% for genre in movie.genres.all %}
+                    <a href="#" class="text-warning text-decoration-none">{{ genre.name }}</a>{% if not forloop.last %},
+                    {% endif %}
+                    {% endfor %}
+                </p>
+                {% comment %} <p>
+                    <span class="text-muted">Режисер:</span>
+                    <a href="#" class="text-warning text-decoration-none">Jen Bennett</a>,
+                    <a href="#" class="text-warning text-decoration-none">Lianne Hughes</a>,
+                    <a href="#" class="text-warning text-decoration-none">Stephanie Stine</a>
+                </p> {% endcomment %}
+                <p>
+                    <span class="text-muted">Актори:</span>
+                    {% for actor in movie.actors.all %}
+                    <a href="#" class="text-warning text-decoration-none">{{ actor.name }}</a>{% if not forloop.last %},
+                    {% endif %}
+                    {% endfor %}
+
+                </p>
+                {% comment %} <p class="text-warning">
+                    <span class="text-muted">Озвучення:</span>
+
+                    Garatorголосkій закадровий | LemOnka, Справжня Козацька Озвучка
+
+                </p> {% endcomment %}
+
+                <!-- IMDb Rating -->
+                <div class="d-flex align-items-center gap-2 my-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/IMDB_Logo_2016.svg" alt="IMDb"
+                        height="20">
+                    <span class="text-warning fs-7"><strong>{{ movie.imdb }}</strong></span>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Description section -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="text-white">
+                
+               Про що {{ movie.category.name|lower }} "{{ movie.title }}":
+            </h5>
+            <small class="text-muted">
+                {{ movie.changed_on }} <i class="fas fa-info-circle"></i>
+            </small>
+        </div>
+        <p class="text-muted">
+            {{ movie.description }}
+        </p>
+    </div>
+</div>
+<!-- player -->
+<div class="container-fluid text-white p-0">
+    <!-- Header -->
+    <div class="text-center py-2">
+        <small>Дивитися {{ movie.category.name|lower }} «{{ movie.title }}» українською мовою онлайн
+            безкоштовно</small>
+    </div>
+    <div class="container-fluid bg-dark rounded-bottom-3 p-0">
+        <!-- Tabs and Controls -->
+        <div class="d-flex justify-content-between align-items-center p-3">
+            <!-- Left tabs -->
+            <div class="d-flex gap-2">
+                <button class="btn btn-warning active">Плеєр</button>
+            </div>
+
+            <!-- Right controls -->
+            <div class="d-flex gap-3 align-items-center">
+                <!-- <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="autoplay" checked>
+                            <label class="form-check-label" for="autoplay">АВТОПЕРЕМИКАННЯ</label>
+                        </div> -->
+                <a href="#" class="text-white text-decoration-none">
+                    <i class="fas fa-flag"></i> Відео не працює?
+                </a>
+            </div>
+        </div>
+
+        <div id="player" class="w-100"></div>
+    </div>
+
+    <!-- Like/Dislike and Share -->
+    <!-- <div class="d-flex justify-content-between align-items-center p-3">
+                <div class="d-flex gap-3">
+                    <button class="btn btn-link text-success text-decoration-none">
+                        <i class="fas fa-thumbs-up"></i> 42802
+                    </button>
+                    <button class="btn btn-link text-danger text-decoration-none">
+                        <i class="fas fa-thumbs-down"></i> 6617
+                    </button>
+                </div> -->
+
+    <!-- <div class="d-flex gap-2">
+                    <button class="btn btn-primary btn-sm rounded-circle">
+                        <i class="fab fa-facebook-f"></i>
+                    </button>
+                    <button class="btn btn-info btn-sm rounded-circle">
+                        <i class="fab fa-twitter"></i>
+                    </button>
+                    <button class="btn btn-primary btn-sm rounded-circle">
+                        <i class="fab fa-telegram"></i>
+                    </button>
+                </div> -->
+</div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}<script src="{% static 'movies/playerjs.js' %}" type="text/javascript"></script> {% endblock %}
+
+{% block script %}
+<script>
+
+    let player = new Playerjs({
+        id: "player",
+        file: {{ players_list| safe }}
+    });
+</script>
+{% endblock %}

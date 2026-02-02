@@ -87,4 +87,4 @@ class Item(models.Model):
     def __str__(self):
         if self.episode_number:
             return self.player.title + '\n' + self.player.movie.title + f"\nEpisode {self.episode_number}"
-        return f"{self.player.title}"
+        return f"{self.player.title}" + "\n" + self.player.movie.title
