@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Movie, Player, Genre, Actor, Item, Category
+from .models import Movie, Player, Genre, Actor, Item, Category, Subtitle
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -12,8 +12,15 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Movie)
 class MovieAdmin(admin.ModelAdmin):
      prepopulated_fields = {"slug": ("title",)}
-     
+
+class SubtitleInline(admin.TabularInline):
+    model = Subtitle
+    extra = 1
+
+@admin.register(Item)
+class ItemAdmin(admin.ModelAdmin):
+    inlines = [SubtitleInline]
+
 admin.site.register(Player)
 admin.site.register(Genre)
 admin.site.register(Actor)
-admin.site.register(Item)

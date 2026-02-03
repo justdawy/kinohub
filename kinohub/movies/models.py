@@ -83,8 +83,24 @@ class Item(models.Model):
     player = models.ForeignKey(Player, related_name='items', on_delete=models.CASCADE)
     url = models.URLField()
     episode_number = models.PositiveIntegerField(blank=True, null=True)
-
+    
     def __str__(self):
         if self.episode_number:
-            return self.player.title + '\n' + self.player.movie.title + f"\nEpisode {self.episode_number}"
-        return f"{self.player.title}" + "\n" + self.player.movie.title
+            return (
+                f"{self.player.title}\n"
+                f"{self.player.movie.title}\n"
+                f"Episode {self.episode_number}"
+            )
+        return f"{self.player.title}\n{self.player.movie.title}"
+    
+class Subtitle(models.Model):
+    item = models.ForeignKey(
+        Item,
+        related_name='subtitles',
+        on_delete=models.CASCADE
+    )
+    label = models.CharField(max_length=30)
+    file = models.URLField()
+    
+    def __str__(self):
+        return f"{self.label} - {self.item}"
