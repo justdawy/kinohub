@@ -44,7 +44,7 @@ class Actor(models.Model):
         return self.name
 
 class Movie(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.RESTRICT, default=1, related_name="movies")
+    category = models.ForeignKey(Category, on_delete=models.RESTRICT, related_name="movies")
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True, null=True)
