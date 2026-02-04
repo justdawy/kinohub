@@ -1,24 +1,11 @@
-from django.shortcuts import render
-from django.db.models import Prefetch
 from django.views import generic
 from django.conf import settings
 
 from movies.models import Movie, Category
 
-class IndexView(generic.ListView):
+class IndexView(generic.TemplateView):
     template_name = "movies/index.html"
-    context_object_name = "categories"
     
-    def get_queryset(self):
-        movies = Prefetch(
-            "movies",
-            queryset=Movie.objects.all().order_by("-created_on")[:8],
-            to_attr="first_movies"
-        )
-        categories = Category.objects.prefetch_related(movies).filter(
-            is_visible_on_home=True).order_by("position")
-        return categories
-
 class MovieDetailView(generic.DetailView):
     model = Movie
     template_name = "movies/movie_detail.html"
