@@ -56,6 +56,7 @@ requires-dist = [
     { name = "python-decouple", specifier = ">=3.8" },
 ]
 
+
 [[package]]
 name = "psycopg2-binary"
 version = "2.9.11"
@@ -103,6 +104,7 @@ sdist = { url = "https://files.pythonhosted.org/packages/90/76/437d71068094df072
 wheels = [
     { url = "https://files.pythonhosted.org/packages/49/4b/359f28a903c13438ef59ebeee215fb25da53066db67b305c125f1c6d2a25/sqlparse-0.5.5-py3-none-any.whl", hash = "sha256:12a08b3bf3eec877c519589833aed092e2444e68240a3577e8e26148acc7b1ba", size = 46138, upload-time = "2025-12-19T07:17:46.573Z" },
 ]
+
 
 [[package]]
 name = "tzdata"
