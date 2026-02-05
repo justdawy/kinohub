@@ -33,7 +33,7 @@
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           {% for c in categories %}
-          <li><a href="#" class="nav-link px-2 link-light">{{ c.name }}</a></li>
+          <li><a href="{{ c.get_absolute_url }}" class="nav-link px-2 link-light">{{ c.name }}</a></li>
           {% endfor %}
         </ul>
 
