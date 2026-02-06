@@ -1,12 +1,13 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.timezone import now
+from slugify import slugify
 
 
 class Category(models.Model):
     icon = models.CharField(max_length=24, default="fa-film")
     name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True)
 
     is_visible_on_home = models.BooleanField(
         default=True,
@@ -22,6 +23,11 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse("category_detail", kwargs={"category_slug": self.slug})
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
 
 class Genre(models.Model):
     name = models.CharField(
@@ -29,9 +35,21 @@ class Genre(models.Model):
         unique=True,
         help_text="Enter a movie genre (e.g. Drama, Horror, Comedy)",
     )
+    slug = models.SlugField(unique=True, blank=True)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse(
+            "genre_detail",
+            kwargs={"genre_slug": self.slug},
+        )
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 
 class Actor(models.Model):
@@ -40,9 +58,21 @@ class Actor(models.Model):
         unique=True,
         help_text="Enter an actor's name (e.g. Tobey Maguire)",
     )
+    slug = models.SlugField(unique=True, blank=True)
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse(
+            "actor_detail",
+            kwargs={"actor_slug": self.slug},
+        )
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
 
 class Movie(models.Model):
@@ -50,7 +80,7 @@ class Movie(models.Model):
         Category, on_delete=models.RESTRICT, related_name="movies"
     )
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, blank=True)
     description = models.TextField(blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)
     full_quality = models.CharField(max_length=50, blank=True, null=True)
@@ -69,6 +99,11 @@ class Movie(models.Model):
             "movie_detail",
             kwargs={"category_slug": self.category.slug, "movie_slug": self.slug},
         )
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
 
 class Player(models.Model):
