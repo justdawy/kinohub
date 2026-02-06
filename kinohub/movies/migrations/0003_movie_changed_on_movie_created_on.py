@@ -5,20 +5,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0002_movie_release_year'),
+        ("movies", "0002_movie_release_year"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='movie',
-            name='changed_on',
-            field=models.DateTimeField(auto_now=True, verbose_name='Date edited'),
+            model_name="movie",
+            name="changed_on",
+            field=models.DateTimeField(auto_now=True, verbose_name="Date edited"),
         ),
         migrations.AddField(
-            model_name='movie',
-            name='created_on',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='Date published'),
+            model_name="movie",
+            name="created_on",
+            field=models.DateTimeField(
+                default=django.utils.timezone.now, verbose_name="Date published"
+            ),
         ),
     ]

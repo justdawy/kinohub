@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0004_category_movie_category'),
+        ("movies", "0004_category_movie_category"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='category',
-            name='icon',
-            field=models.CharField(default='fa-film', max_length=24),
+            model_name="category",
+            name="icon",
+            field=models.CharField(default="fa-film", max_length=24),
         ),
     ]

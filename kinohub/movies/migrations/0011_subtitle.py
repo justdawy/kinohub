@@ -5,19 +5,33 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0010_alter_category_slug_alter_movie_slug'),
+        ("movies", "0010_alter_category_slug_alter_movie_slug"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Subtitle',
+            name="Subtitle",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('label', models.CharField(max_length=30)),
-                ('file', models.URLField()),
-                ('item', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='subtitles', to='movies.item')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("label", models.CharField(max_length=30)),
+                ("file", models.URLField()),
+                (
+                    "item",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="subtitles",
+                        to="movies.item",
+                    ),
+                ),
             ],
         ),
     ]

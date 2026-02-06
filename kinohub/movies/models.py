@@ -7,44 +7,48 @@ class Category(models.Model):
     icon = models.CharField(max_length=24, default="fa-film")
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(unique=True)
-    
+
     is_visible_on_home = models.BooleanField(
         default=True,
-        help_text="Select whether you want to display this category on the home page"
+        help_text="Select whether you want to display this category on the home page",
     )
     position = models.PositiveIntegerField(
-        default=0,
-        help_text="Order of category on the main page (lower comes first)"
+        default=0, help_text="Order of category on the main page (lower comes first)"
     )
-    
+
     def __str__(self):
         return self.name
-    
+
     def get_absolute_url(self):
         return reverse("category_detail", kwargs={"category_slug": self.slug})
+
 
 class Genre(models.Model):
     name = models.CharField(
         max_length=100,
         unique=True,
-        help_text="Enter a movie genre (e.g. Drama, Horror, Comedy)"
+        help_text="Enter a movie genre (e.g. Drama, Horror, Comedy)",
     )
 
     def __str__(self):
         return self.name
+
 
 class Actor(models.Model):
     name = models.CharField(
         max_length=100,
         unique=True,
-        help_text="Enter an actor's name (e.g. Tobey Maguire)"
+        help_text="Enter an actor's name (e.g. Tobey Maguire)",
     )
 
     def __str__(self):
         return self.name
 
+
 class Movie(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.RESTRICT, related_name="movies")
+    category = models.ForeignKey(
+        Category, on_delete=models.RESTRICT, related_name="movies"
+    )
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True, null=True)
@@ -52,38 +56,34 @@ class Movie(models.Model):
     full_quality = models.CharField(max_length=50, blank=True, null=True)
     imdb = models.FloatField(blank=True, null=True)
     release_year = models.PositiveIntegerField(blank=True, null=True)
-    genres = models.ManyToManyField(
-            Genre, help_text="Select a genre for this book"
-    )
-    actors = models.ManyToManyField(
-            Actor, help_text="Select an actor for this movie"
-    )
+    genres = models.ManyToManyField(Genre, help_text="Select a genre for this book")
+    actors = models.ManyToManyField(Actor, help_text="Select an actor for this movie")
     created_on = models.DateTimeField("Date published", default=now)
     changed_on = models.DateTimeField("Date edited", auto_now=True)
-    
 
     def __str__(self):
         return self.title
-    
+
     def get_absolute_url(self):
-        return reverse("movie_detail", kwargs={
-            "category_slug": self.category.slug,
-            "movie_slug": self.slug
-        })
-    
+        return reverse(
+            "movie_detail",
+            kwargs={"category_slug": self.category.slug, "movie_slug": self.slug},
+        )
+
 
 class Player(models.Model):
-    movie = models.ForeignKey(Movie, related_name='players', on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, related_name="players", on_delete=models.CASCADE)
     title = models.CharField(max_length=80)
 
     def __str__(self):
         return self.title + "\n" + self.movie.title
 
+
 class Item(models.Model):
-    player = models.ForeignKey(Player, related_name='items', on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, related_name="items", on_delete=models.CASCADE)
     url = models.URLField()
     episode_number = models.PositiveIntegerField(blank=True, null=True)
-    
+
     def __str__(self):
         if self.episode_number:
             return (
@@ -92,15 +92,12 @@ class Item(models.Model):
                 f"Episode {self.episode_number}"
             )
         return f"{self.player.title}\n{self.player.movie.title}"
-    
+
+
 class Subtitle(models.Model):
-    item = models.ForeignKey(
-        Item,
-        related_name='subtitles',
-        on_delete=models.CASCADE
-    )
+    item = models.ForeignKey(Item, related_name="subtitles", on_delete=models.CASCADE)
     label = models.CharField(max_length=30)
     file = models.URLField()
-    
+
     def __str__(self):
         return f"{self.label} - {self.item}"

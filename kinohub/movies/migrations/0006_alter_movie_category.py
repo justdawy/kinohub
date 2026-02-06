@@ -5,15 +5,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0005_category_icon'),
+        ("movies", "0005_category_icon"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='movie',
-            name='category',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.RESTRICT, related_name='category', to='movies.category'),
+            model_name="movie",
+            name="category",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.RESTRICT,
+                related_name="category",
+                to="movies.category",
+            ),
         ),
     ]

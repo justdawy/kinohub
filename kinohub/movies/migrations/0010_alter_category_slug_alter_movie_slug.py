@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0009_category_slug_movie_slug'),
+        ("movies", "0009_category_slug_movie_slug"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='category',
-            name='slug',
+            model_name="category",
+            name="slug",
             field=models.SlugField(unique=True),
         ),
         migrations.AlterField(
-            model_name='movie',
-            name='slug',
+            model_name="movie",
+            name="slug",
             field=models.SlugField(unique=True),
         ),
     ]

@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0008_category_is_visible_on_home_category_position'),
+        ("movies", "0008_category_is_visible_on_home_category_position"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='category',
-            name='slug',
+            model_name="category",
+            name="slug",
             field=models.SlugField(null=True, unique=True),
         ),
         migrations.AddField(
-            model_name='movie',
-            name='slug',
+            model_name="movie",
+            name="slug",
             field=models.SlugField(null=True, unique=True),
         ),
     ]

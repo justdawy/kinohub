@@ -31,7 +31,7 @@
                         {% for genre in genres %}
                             <option>{{ genre.name }}</option>
                         {% endfor %}
-                        
+
                     </select>
                 </div>
 
@@ -105,7 +105,7 @@
                 {% else %}
                 <h1>Категорія наразі порожня.</h1>
                 {% endif %}
-               
+
         </section>
         {% if movies.paginator.page_range > 1 %}
             <nav aria-label="Page navigation example">
@@ -124,7 +124,7 @@
                         </a>
                     </li>
                     {% endfor %}
-                
+
                     {% if movies.has_next %}
                     <li class="page-item">
                         <a class="page-link text-warning" href="?page={{ movies.next_page_number }}">
@@ -135,5 +135,5 @@
                 </ul>
             </nav>
         {% endif %}
-        
+
 {% endblock main %}

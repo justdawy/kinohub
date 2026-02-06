@@ -5,22 +5,33 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0003_movie_changed_on_movie_created_on'),
+        ("movies", "0003_movie_changed_on_movie_created_on"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100, unique=True)),
             ],
         ),
         migrations.AddField(
-            model_name='movie',
-            name='category',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.RESTRICT, to='movies.category'),
+            model_name="movie",
+            name="category",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.RESTRICT,
+                to="movies.category",
+            ),
         ),
     ]

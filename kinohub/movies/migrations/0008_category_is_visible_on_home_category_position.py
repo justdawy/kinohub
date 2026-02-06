@@ -4,20 +4,25 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0007_alter_movie_category'),
+        ("movies", "0007_alter_movie_category"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='category',
-            name='is_visible_on_home',
-            field=models.BooleanField(default=True, help_text='Select whether you want to display this category on the home page'),
+            model_name="category",
+            name="is_visible_on_home",
+            field=models.BooleanField(
+                default=True,
+                help_text="Select whether you want to display this category on the home page",
+            ),
         ),
         migrations.AddField(
-            model_name='category',
-            name='position',
-            field=models.PositiveIntegerField(default=0, help_text='Order of category on the main page (lower comes first)'),
+            model_name="category",
+            name="position",
+            field=models.PositiveIntegerField(
+                default=0,
+                help_text="Order of category on the main page (lower comes first)",
+            ),
         ),
     ]

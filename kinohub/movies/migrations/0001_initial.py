@@ -5,55 +5,134 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Actor',
+            name="Actor",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text="Enter an actor's name (e.g. Tobey Maguire)", max_length=100, unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text="Enter an actor's name (e.g. Tobey Maguire)",
+                        max_length=100,
+                        unique=True,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Genre',
+            name="Genre",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text='Enter a movie genre (e.g. Drama, Horror, Comedy)', max_length=100, unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text="Enter a movie genre (e.g. Drama, Horror, Comedy)",
+                        max_length=100,
+                        unique=True,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Movie',
+            name="Movie",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255)),
-                ('description', models.TextField(blank=True, null=True)),
-                ('image_url', models.URLField(blank=True, null=True)),
-                ('full_quality', models.CharField(blank=True, max_length=50, null=True)),
-                ('imdb', models.FloatField(blank=True, null=True)),
-                ('actors', models.ManyToManyField(help_text='Select an actor for this movie', to='movies.actor')),
-                ('genres', models.ManyToManyField(help_text='Select a genre for this book', to='movies.genre')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=255)),
+                ("description", models.TextField(blank=True, null=True)),
+                ("image_url", models.URLField(blank=True, null=True)),
+                (
+                    "full_quality",
+                    models.CharField(blank=True, max_length=50, null=True),
+                ),
+                ("imdb", models.FloatField(blank=True, null=True)),
+                (
+                    "actors",
+                    models.ManyToManyField(
+                        help_text="Select an actor for this movie", to="movies.actor"
+                    ),
+                ),
+                (
+                    "genres",
+                    models.ManyToManyField(
+                        help_text="Select a genre for this book", to="movies.genre"
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Player',
+            name="Player",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=80)),
-                ('movie', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='players', to='movies.movie')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=80)),
+                (
+                    "movie",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="players",
+                        to="movies.movie",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Item',
+            name="Item",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('url', models.URLField()),
-                ('episode_number', models.PositiveIntegerField(blank=True, null=True)),
-                ('player', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='movies.player')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("url", models.URLField()),
+                ("episode_number", models.PositiveIntegerField(blank=True, null=True)),
+                (
+                    "player",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="items",
+                        to="movies.player",
+                    ),
+                ),
             ],
         ),
     ]
