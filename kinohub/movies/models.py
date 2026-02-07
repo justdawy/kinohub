@@ -76,6 +76,15 @@ class Actor(models.Model):
 
 
 class Movie(models.Model):
+    FILM = 1
+    SERIES = 2
+
+    MOVIE_TYPE_CHOICES = [
+        (FILM, "Film (few dubs)"),
+        (SERIES, "Series (episodes)"),
+    ]
+    movie_type = models.PositiveSmallIntegerField(choices=MOVIE_TYPE_CHOICES, default=1)
+
     category = models.ForeignKey(
         Category, on_delete=models.RESTRICT, related_name="movies"
     )
