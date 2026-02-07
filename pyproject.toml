@@ -8,6 +8,7 @@ dependencies = [
     "psycopg2-binary>=2.9.11",
     "python-decouple>=3.8",
     "python-slugify>=8.0.4",
+    "tqdm>=4.67.3",
 ]
 
 [dependency-groups]
