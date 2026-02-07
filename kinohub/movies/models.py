@@ -7,7 +7,7 @@ from slugify import slugify
 class Category(models.Model):
     icon = models.CharField(max_length=24, default="fa-film")
     name = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True, max_length=255)
 
     is_visible_on_home = models.BooleanField(
         default=True,
@@ -35,7 +35,7 @@ class Genre(models.Model):
         unique=True,
         help_text="Enter a movie genre (e.g. Drama, Horror, Comedy)",
     )
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True, max_length=255)
 
     def __str__(self):
         return self.name
@@ -58,7 +58,7 @@ class Actor(models.Model):
         unique=True,
         help_text="Enter an actor's name (e.g. Tobey Maguire)",
     )
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True, max_length=255)
 
     def __str__(self):
         return self.name
@@ -80,7 +80,7 @@ class Movie(models.Model):
         Category, on_delete=models.RESTRICT, related_name="movies"
     )
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True, max_length=255)
     description = models.TextField(blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)
     full_quality = models.CharField(max_length=50, blank=True, null=True)
