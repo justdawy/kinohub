@@ -18,7 +18,7 @@ class MovieDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         players_list = []
-        if self.object.category.name == "Фільми":
+        if self.object.movie_type == Movie.FILM:
             for player in self.object.players.all():
                 for player_item in player.items.all():
                     players_list.append(
@@ -27,7 +27,19 @@ class MovieDetailView(generic.DetailView):
                             "file": settings.PROXY_URL + player_item.url,
                         }
                     )
-            context["players_list"] = players_list
+        elif self.object.movie_type == Movie.SERIES:
+            for player in self.object.players.all():
+                folder = {"title": player.title, "folder": []}
+                for player_item in player.items.all():
+                    folder["folder"].append(
+                        {
+                            "title": f"Серія {player_item.episode_number}",
+                            "file": settings.PROXY_URL + player_item.url,
+                        }
+                    )
+                players_list.append(folder)
+
+        context["players_list"] = players_list
         return context
 
 
