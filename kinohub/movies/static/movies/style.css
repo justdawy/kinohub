@@ -218,3 +218,8 @@ a.category-title {
     background-color: #ffc107;
     border-color: goldenrod;
 }
+
+.active>.page-link, .page-link.active{
+  background-color: #ffc107;
+  border-color: goldenrod;
+}
