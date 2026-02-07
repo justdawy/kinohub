@@ -125,7 +125,7 @@ class Player(models.Model):
 
 class Item(models.Model):
     player = models.ForeignKey(Player, related_name="items", on_delete=models.CASCADE)
-    url = models.URLField()
+    url = models.URLField(max_length=300)
     episode_number = models.PositiveIntegerField(blank=True, null=True)
 
     def __str__(self):
