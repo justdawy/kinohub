@@ -5,7 +5,7 @@
 {% if category.first_movies|length > 0 %}
 <section class="mb-5">
   <div class="container-fluid">
-    <a class="category-title text-decoration-none" href=""><span class="fs-5 fas {{ category.icon }}"></span>
+    <a class="category-title text-decoration-none" href="{{ category.get_absolute_url }}"><span class="fs-5 fas {{ category.icon }}"></span>
       <h5 class="section-title text-uppercase mb-3">{{ category.name }}</h5>
     </a>
     <div class="row g-3 film-row">

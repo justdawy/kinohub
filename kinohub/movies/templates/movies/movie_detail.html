@@ -24,7 +24,7 @@
                 <p>
                     <span class="text-muted">Жанр:</span>
                     {% for genre in movie.genres.all %}
-                        <a href="" class="text-warning text-decoration-none">{{ genre.name }}</a>{% if not forloop.last %},
+                        <a href="#" class="text-warning text-decoration-none">{{ genre.name }}</a>{% if not forloop.last %},
                     {% endif %}
                     {% endfor %}
                 </p>
