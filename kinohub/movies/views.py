@@ -15,6 +15,10 @@ class MovieDetailView(generic.DetailView):
     slug_field = "slug"
     slug_url_kwarg = "movie_slug"
 
+    def get_queryset(self):
+        #  filter by category
+        return Movie.objects.filter(category__slug=self.kwargs.get("category_slug"))
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         players_list = []
