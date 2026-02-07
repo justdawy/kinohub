@@ -80,7 +80,7 @@ class Movie(models.Model):
         Category, on_delete=models.RESTRICT, related_name="movies"
     )
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True, blank=True, max_length=255)
+    slug = models.SlugField(blank=True, max_length=255)
     description = models.TextField(blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)
     full_quality = models.CharField(max_length=50, blank=True, null=True)
