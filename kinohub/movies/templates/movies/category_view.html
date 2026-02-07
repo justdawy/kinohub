@@ -103,13 +103,14 @@
                     </div>
                 </div>
                 {% else %}
-                <h1>Категорія наразі порожня.</h1>
+                <h1>Категорія наразі порожня.{{ movies.paginator.page_range }}</h1>
                 {% endif %}
 
         </section>
-        {% if movies.paginator.page_range > 1 %}
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center flex-wrap">
+
                     {% if movies.has_previous %}
                     <li class="page-item">
                         <a class="page-link text-warning" href="?page={{ movies.previous_page_number }}">
@@ -117,12 +118,23 @@
                         </a>
                     </li>
                     {% endif %}
-                    {% for page in movies.paginator.page_range %}
-                    <li class="page-item">
-                        <a class="page-link text-warning" href="?page={{ page }}">
-                            {{ page }}
-                        </a>
-                    </li>
+
+                    {% for page in page_range %}
+                        {% if page == "…" %}
+                            <li class="page-item disabled">
+                                <span class="page-link">…</span>
+                            </li>
+                        {% elif page == movies.number %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ page }}</span>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link text-warning" href="?page={{ page }}">
+                                    {{ page }}
+                                </a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
 
                     {% if movies.has_next %}
@@ -132,8 +144,8 @@
                         </a>
                     </li>
                     {% endif %}
+
                 </ul>
             </nav>
-        {% endif %}
 
 {% endblock main %}

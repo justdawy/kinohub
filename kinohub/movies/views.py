@@ -55,12 +55,15 @@ class CategoryDetailView(generic.DetailView):
         movies = self.get_movies()
         context["genres"] = Genre.objects.all()
         context["movies"] = movies
-        context["page_obj"] = movies
+        context["page_range"] = movies.paginator.get_elided_page_range(
+            movies.number, on_each_side=9, on_ends=1
+        )
         return context
 
     def get_movies(self):
-        queryset = self.object.movies.all()
-        paginator = Paginator(queryset, 30)  # paginate_by
+        queryset = self.object.movies.all().order_by("-created_on")
+        paginator = Paginator(queryset, 24)  # paginate_by
         page = self.request.GET.get("page")
         movies = paginator.get_page(page)
+        print(movies.paginator.page_range.stop)
         return movies
