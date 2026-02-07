@@ -61,7 +61,7 @@ class CategoryDetailView(generic.DetailView):
         return context
 
     def get_movies(self):
-        queryset = self.object.movies.all().order_by("-created_on")
+        queryset = self.object.movies.all().order_by("-changed_on")
         paginator = Paginator(queryset, 24)  # paginate_by
         page = self.request.GET.get("page")
         movies = paginator.get_page(page)
