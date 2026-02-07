@@ -18,6 +18,7 @@ class PlayerInline(admin.TabularInline):
 
 @admin.register(Movie)
 class MovieAdmin(admin.ModelAdmin):
+    autocomplete_fields = ["actors", "genres"]
     prepopulated_fields = {"slug": ("title",)}
     inlines = [PlayerInline]
 
@@ -42,5 +43,11 @@ class PlayerAdmin(admin.ModelAdmin):
     inlines = [ItemInline]
 
 
-admin.site.register(Genre)
-admin.site.register(Actor)
+@admin.register(Genre)
+class GenreAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+
+
+@admin.register(Actor)
+class ActorAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
