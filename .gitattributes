@@ -1,2 +1,5 @@
+# Make GitHub syntax-highlight .html files as Django templates
+*.html linguist-language=django
+
 **/static/** linguist-vendored
 **/templates/** linguist-vendored
