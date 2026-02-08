@@ -2,6 +2,7 @@ from django.conf import settings
 from django.core.paginator import Paginator
 from django.views import generic
 
+from movies.forms import SearchForm
 from movies.models import Category, Genre, Movie
 
 
@@ -56,18 +57,51 @@ class CategoryDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        movies = self.get_movies()
-        context["genres"] = Genre.objects.all()
-        context["movies"] = movies
-        context["page_range"] = movies.paginator.get_elided_page_range(
-            movies.number, on_each_side=9, on_ends=1
-        )
+        genres = Genre.objects.all()
+        form = SearchForm(self.request.GET, genres=genres)
+        if not form.is_valid():
+            movies = self.get_movies()
+            context["movies"] = movies
+            context["page_range"] = movies.paginator.get_elided_page_range(
+                movies.number, on_each_side=9, on_ends=1
+            )
+        else:
+            filters = {}
+
+            title = form.cleaned_data.get("title")
+            if title.isascii():
+                filters["slug__icontains"] = title
+            else:
+                filters["title__icontains"] = title
+
+            genre = form.cleaned_data.get("genres")
+            if genre:
+                filters["genres__name"] = genre
+
+            min_rating = form.cleaned_data.get("min_imdb_rating")
+            if min_rating is not None:
+                filters["imdb__gte"] = min_rating
+
+            year = form.cleaned_data.get("year")
+            if year:
+                filters["release_year"] = year
+
+            movies = self.get_movies(search=True, **filters)
+            context["movies"] = movies
+            context["page_range"] = movies.paginator.get_elided_page_range(
+                movies.number, on_each_side=9, on_ends=1
+            )
+
+        context["form"] = form
+
         return context
 
-    def get_movies(self):
-        queryset = self.object.movies.all().order_by("-changed_on")
+    def get_movies(self, search=False, **kwargs):
+        if not search:
+            queryset = self.object.movies.all().order_by("-changed_on")
+        else:
+            queryset = self.object.movies.filter(**kwargs).order_by("-changed_on")
         paginator = Paginator(queryset, 24)  # paginate_by
         page = self.request.GET.get("page")
         movies = paginator.get_page(page)
-        print(movies.paginator.page_range.stop)
         return movies

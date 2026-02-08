@@ -2,14 +2,45 @@
 {% block title %}{{ category.name }}{%  endblock %}
 {% block main %}
  <!-- Filter Search -->
+
         <div class="container-fluid">
             <h2 class="ctf-pl-title mb-4">
                 <span class="fas fa-film text-warning"></span>
                 {{ category.name }}
             </h2>
-            <form class="row g-2 align-items-end p-3 border rounded bg-dark">
-
+            <form class="row g-2 align-items-end p-3 border rounded bg-dark" method="GET">
+                {% comment %} {{ form }} {% endcomment %}
+                 <div class="col-md-2">
+                <label for="{{ form.title.id_for_label }}" class="form-label">
+                    {{ form.title.label }}
+                </label>
+                {{ form.title }}
                 <!-- Year -->
+
+                </div>
+                <div class="col-md-1">
+                    <label for="{{ form.year.id_for_label }}" class="form-label">
+                        {{ form.year.label }}
+                    </label>
+                    {{ form.year }}
+                </div>
+
+                <!-- IMDb Rating -->
+                <div class="col-md-1">
+                    <label for="{{ form.min_imdb_rating.id_for_label }}" class="form-label">
+                        {{ form.min_imdb_rating.label }}
+                    </label>
+                    {{ form.min_imdb_rating }}
+                </div>
+
+                <!-- Genre -->
+                <div class="col-md-2">
+                    <label for="{{ form.genres.id_for_label }}" class="form-label">
+                        {{ form.genres.label }}
+                    </label>
+                    {{ form.genres }}
+                </div>
+                {% comment %} <!-- Year -->
                 <div class="col-md-2">
                     <label class="form-label">Year</label>
                     <input value="2026" min="1920" type="number" class="form-control" placeholder="e.g. 2022">
@@ -33,7 +64,7 @@
                         {% endfor %}
 
                     </select>
-                </div>
+                </div> {% endcomment %}
 
                 <!-- Buttons -->
                 <div class="col-md-5 d-flex gap-2">
