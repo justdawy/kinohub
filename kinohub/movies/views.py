@@ -10,6 +10,28 @@ class IndexView(generic.TemplateView):
     template_name = "movies/index.html"
 
 
+class SearchListView(generic.ListView):
+    model = Movie
+    template_name = "movies/search.html"
+    context_object_name = "movies"
+    paginate_by = 24
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = self.request.GET.get("title")
+        return context
+
+    def get_queryset(self):
+        # filter by title
+        title: str = self.request.GET.get("title")
+        if not title:
+            return []
+        elif title.isascii():
+            return Movie.objects.filter(slug__icontains=title).order_by("-changed_on")
+        else:
+            return Movie.objects.filter(title__icontains=title).order_by("-changed_on")
+
+
 class MovieDetailView(generic.DetailView):
     model = Movie
     template_name = "movies/movie_detail.html"
@@ -26,9 +48,13 @@ class MovieDetailView(generic.DetailView):
         if self.object.movie_type == Movie.FILM:
             for player in self.object.players.all():
                 for player_item in player.items.all():
+                    if player_item.player.title == "default":
+                        title = "Звичайний"
+                    else:
+                        title = player_item.player.title
                     players_list.append(
                         {
-                            "title": player_item.player.title,
+                            "title": title,
                             "file": settings.PROXY_URL + player_item.url,
                         }
                     )

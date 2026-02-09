@@ -4,6 +4,7 @@ from movies import views
 
 urlpatterns = [
     path("", views.IndexView.as_view(), name="index"),
+    path("search/", views.SearchListView.as_view(), name="search"),
     path(
         "<slug:category_slug>/<slug:movie_slug>/",
         views.MovieDetailView.as_view(),

@@ -1,0 +1,122 @@
+{% extends "movies/base.html" %}
+{% block title %}{{ category.name }}{%  endblock %}
+{% block main %}
+ <!-- Filter Search -->
+
+        <div class="container-fluid">
+            <h2 class="ctf-pl-title mb-4">
+                <span class="fas fa-film text-warning"></span>
+                Результати пошуку за запитом: <span style="color: white;" >{{ title }}</span>
+            </h2>
+            <form class="row g-2 align-items-end p-3 border rounded bg-dark" method="GET" action="">
+                 <div class="col-md-7">
+                    <label class="form-label">Назва</label>
+                    <input name="title" value="2026" min="1920" type="text" class="form-control" placeholder="e.g Futurama"></input>
+                 </div>
+                <!-- Buttons -->
+                <div class="col-md-5 d-flex gap-2">
+                    <button type="submit" class="btn btn-warning w-100">
+                        Search
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary w-100">
+                        Clear
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="container-fluid">
+            <div class="filter-segmented-bar my-3 d-flex justify-content-end">
+                <div class="btn-group" role="group" aria-label="Filter tabs">
+                    <input type="radio" class="btn-check" name="segment" id="f" value="f" checked>
+                    <label class="btn btn-outline-primary" for="f">Останні оновлення</label>
+
+                    {% comment %} <input type="radio" class="btn-check" name="segment" id="w" value="w">
+                    <label class="btn btn-outline-primary" for="w">Зараз дивляться</label> {% endcomment %}
+
+                    {% comment %} <input type="radio" class="btn-check" name="segment" id="p" value="p">
+                    <label class="btn btn-outline-primary" for="p">Новинки</label> {% endcomment %}
+                </div>
+            </div>
+        </div>
+
+        <!--  series category section -->
+        <section class="mb-5">
+            <div class="container-fluid my-5">
+                {% if movies %}
+                 <div class="row g-3 film-row">
+                   {% for movie in movies %}
+                        <!-- Card -->
+                        <div class="col-auto">
+                            <a class="text-decoration-none" href="{{ movie.get_absolute_url }}">
+                            <div class="film-card">
+
+                                <div class="film-poster">
+                                <img src="{{ movie.image_url }}" alt="">
+
+                                <!-- Play button -->
+                                <div class="play-overlay">
+                                    <i class="fa fa-play"></i>
+                                </div>
+                                <!-- Badge -->
+                                <!--<span class="badge badge-top">1 сезон</span>-->
+                                <span class="badge badge-top" style="top: 8px;">{{ movie.full_quality }}</span>
+                                <span class="badge badge-top" style="top: 32px;">IMDB: {{ movie.imdb }}</span>
+                                </div>
+                                <!-- Title  card-body -->
+                                <div class="film-body">
+                                <div class="film-title ">
+                                    {{ movie.title }}
+                                </div>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+                {% else %}
+                    <h1>Нічого не знайдено.</h1>
+                {% endif %}
+
+        </section>
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center flex-wrap">
+
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link text-warning" href="?page={{ movies.previous_page_number }}">
+                            <span class="fa fas fa-angle-left"></span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for page in page_obj.paginator.page_range %}
+                        {% if page == "…" %}
+                            <li class="page-item disabled">
+                                <span class="page-link">…</span>
+                            </li>
+                        {% elif page == page_obj.number %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ page }}</span>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link text-warning" href="{{ request.get_full_path }}&page={{ page }}">
+                                    {{ page }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link text-warning" href="{{ request.get_full_path }}?page={{ page_obj.next_page_number }}">
+                            <span class="fa fas fa-angle-right"></span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+
+{% endblock main %}

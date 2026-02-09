@@ -161,7 +161,7 @@
                             </li>
                         {% else %}
                             <li class="page-item">
-                                <a class="page-link text-warning" href="?page={{ page }}">
+                                <a class="page-link text-warning" href="{{ request.get_full_path }}&page={{ page }}">
                                     {{ page }}
                                 </a>
                             </li>
