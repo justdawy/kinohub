@@ -85,6 +85,13 @@ class CategoryDetailView(generic.DetailView):
         context = super().get_context_data(**kwargs)
         genres = Genre.objects.all()
         form = SearchForm(self.request.GET, genres=genres)
+
+        # copy GET params except "page"
+        querydict = self.request.GET.copy()
+        querydict.pop("page", None)
+
+        context["query_string"] = querydict.urlencode()
+
         if not form.is_valid():
             movies = self.get_movies()
             context["movies"] = movies
@@ -117,9 +124,7 @@ class CategoryDetailView(generic.DetailView):
             context["page_range"] = movies.paginator.get_elided_page_range(
                 movies.number, on_each_side=9, on_ends=1
             )
-
         context["form"] = form
-
         return context
 
     def get_movies(self, search=False, **kwargs):

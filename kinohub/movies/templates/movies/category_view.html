@@ -144,7 +144,8 @@
 
                     {% if movies.has_previous %}
                     <li class="page-item">
-                        <a class="page-link text-warning" href="?page={{ movies.previous_page_number }}">
+                        <a class="page-link text-warning"
+                        href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ movies.previous_page_number }}">
                             <span class="fa fas fa-angle-left"></span>
                         </a>
                     </li>
@@ -161,7 +162,8 @@
                             </li>
                         {% else %}
                             <li class="page-item">
-                                <a class="page-link text-warning" href="{{ request.get_full_path }}&page={{ page }}">
+                                <a class="page-link text-warning"
+                                href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page }}">
                                     {{ page }}
                                 </a>
                             </li>
@@ -170,7 +172,8 @@
 
                     {% if movies.has_next %}
                     <li class="page-item">
-                        <a class="page-link text-warning" href="?page={{ movies.next_page_number }}">
+                        <a class="page-link text-warning"
+                        href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ movies.next_page_number }}">
                             <span class="fa fas fa-angle-right"></span>
                         </a>
                     </li>
