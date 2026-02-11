@@ -106,7 +106,11 @@ class Movie(models.Model):
     def get_absolute_url(self):
         return reverse(
             "movie_detail",
-            kwargs={"category_slug": self.category.slug, "movie_slug": self.slug},
+            kwargs={
+                "category_slug": self.category.slug,
+                "movie_slug": self.slug,
+                "id": self.pk,
+            },
         )
 
     def save(self, *args, **kwargs):

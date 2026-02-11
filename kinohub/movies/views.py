@@ -40,7 +40,11 @@ class MovieDetailView(generic.DetailView):
 
     def get_queryset(self):
         #  filter by category
-        return Movie.objects.filter(category__slug=self.kwargs.get("category_slug"))
+        return Movie.objects.filter(
+            category__slug=self.kwargs.get("category_slug"),
+            slug=self.kwargs.get("movie_slug"),
+            id=self.kwargs.get("id"),
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
