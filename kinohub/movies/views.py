@@ -6,10 +6,6 @@ from movies.forms import SearchForm
 from movies.models import Category, Genre, Movie
 
 
-class IndexView(generic.TemplateView):
-    template_name = "movies/index.html"
-
-
 class SearchListView(generic.ListView):
     model = Movie
     template_name = "movies/search.html"
