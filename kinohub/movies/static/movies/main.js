@@ -27,3 +27,50 @@ eyeButtons.forEach(button => {
         }
     });
 });
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+const loginForm = document.querySelector('#login-form')
+$(loginForm).submit((e) => {
+    e.preventDefault();
+
+    const username = loginForm.querySelector("#username").value;
+    const password = loginForm.querySelector("#password").value;
+    const form = new FormData()
+    form.set('login', username)
+    form.set('password', password)
+
+    const request = new Request(
+        "users/login/",
+        {
+            method: "POST",
+            headers: {"X-CSRFToken": csrftoken},
+            mode: "same-origin",
+            body: form
+        },
+
+    );
+    fetch(request).then(function(response){
+
+        return response.json()
+    })
+    .then(function(data) {
+        if(data.loggedIn){
+            window.location.reload();
+        }
+    })
+
+})
