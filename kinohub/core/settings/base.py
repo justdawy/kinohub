@@ -9,6 +9,7 @@ SITE_NAME = "Kinohub"
 
 # allauth
 ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_EMAIL_VERIFICATION = "none"
 
 SECRET_KEY = "its-a-secret-to-everybody"
 DEBUG = True

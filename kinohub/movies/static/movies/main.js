@@ -64,7 +64,6 @@ $(loginForm).submit((e) => {
 
     );
     fetch(request).then(function(response){
-
         return response.json()
     })
     .then(function(data) {
@@ -75,4 +74,55 @@ $(loginForm).submit((e) => {
         }
     })
 
+})
+const registerForm = document.querySelector('#register-form')
+$(registerForm).submit((e) => {
+    e.preventDefault();
+
+    const login = registerForm.querySelector("#username").value
+    const password = registerForm.querySelector("#password").value
+    const confirmPassword = registerForm.querySelector("#confirmPassword").value
+    const email = registerForm.querySelector("#email").value
+
+
+    const form = new FormData()
+    form.set("username", login)
+    form.set("email", email)
+    form.set("password1", password)
+    form.set("password2", confirmPassword)
+
+    const request = new Request(
+        "/users/signup/",
+        {
+            method: "POST",
+            headers: {"X-CSRFToken": csrftoken},
+            mode: "same-origin",
+            body: form
+        },
+    );
+    fetch(request)
+    .then(response => response.json())
+    .then(data => {
+    if (data.loggedIn) {
+        window.location.reload();
+    } else {
+
+        const alertBox = document.querySelector("#register-alert");
+        const errorList = alertBox.querySelector(".error-list");
+
+        errorList.innerHTML = ""; // clear previous errors
+
+        if (data.errors) {
+            for (const field in data.errors) {
+                data.errors[field].forEach(error => {
+                    const li = document.createElement("li");
+                    li.textContent = error;
+                    errorList.appendChild(li);
+                });
+            }
+
+            alertBox.classList.remove("d-none");
+        }
+    }
+});
 })

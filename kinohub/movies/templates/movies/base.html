@@ -117,7 +117,7 @@
                     <!-- Links -->
                     <div class="d-flex justify-content-between mb-3">
                       <a class="link-warning" data-bs-theme="modal" data-bs-toggle="modal"
-                        data-bs-target="#forgetPasswordModal" href="#">Forget password</a>
+                        data-bs-target="#forgetPasswordModal" href="#">Забули пароль?</a>
                       <a class="link-warning" data-bs-theme="modal" data-bs-toggle="modal" data-bs-target="#registerModal"
                         href="#">Реєстрація</a>
                     </div>
@@ -176,8 +176,16 @@
 
                 <!-- Body -->
                 <div class="modal-body">
-                  <form>
+                  <form id="register-form">
+                    <div id="register-alert"
+                    class="alert alert-danger alert-dismissible fade show d-none"
+                    role="alert">
 
+                      <i class="fa-solid fa-circle-xmark text-error"></i>
+                      <strong>Реєстрація не вдалася:</strong>
+                      <ul class="mb-0 mt-2 error-list"></ul>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
                     <!-- Username -->
                     <div class="mb-3">
                       <label for="username" class="form-label">Логін:</label>
@@ -206,24 +214,24 @@
                       <label for="password" class="form-label">Повторіть пароль:</label>
 
                       <div class="input-group">
-                        <input type="password" class="form-control" id="password" required>
+                        <input type="password" class="form-control" id="confirmPassword" required>
                         </button>
                       </div>
                     </div>
                     <!-- Email -->
                     <div class="mb-3">
                       <label for="email" class="form-label">Ваш E-Mail:</label>
-                      <input type="text" class="form-control" id="email" required>
+                      <input type="email" class="form-control" id="email" required>
                     </div>
-
-                  </form>
-                </div>
-                <div class="modal-footer">
-                  <button class="btn btn-outline-secondary" data-bs-target="#loginModal"
+                    <div class="modal-footer">
+                  <button type="button" class="btn btn-outline-secondary" data-bs-target="#loginModal"
                     data-bs-toggle="modal">Назад</button>
                   <button type="submit" class="btn btn-warning">Відправити</button>
 
                 </div>
+                  </form>
+                </div>
+
               </div>
             </div>
           </div>
