@@ -54,7 +54,7 @@ $(loginForm).submit((e) => {
     form.set('password', password)
 
     const request = new Request(
-        "users/login/",
+        "/users/login/",
         {
             method: "POST",
             headers: {"X-CSRFToken": csrftoken},
@@ -70,6 +70,8 @@ $(loginForm).submit((e) => {
     .then(function(data) {
         if(data.loggedIn){
             window.location.reload();
+        } else {
+            document.getElementById("login-alert").classList.remove("d-none");
         }
     })
 
