@@ -186,7 +186,7 @@ class Item(models.Model):
     def __str__(self):
         if self.episode_number:
             return (
-                f"{self.player.title} - {self.player.movie.title}"
+                f"{self.player.title} - {self.player.movie.title} "
                 f"Серія {self.episode_number}"
             )
         return f"{self.player.title} - {self.player.movie.title}"
