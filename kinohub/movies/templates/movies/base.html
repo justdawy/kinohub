@@ -144,21 +144,20 @@
 
                 <!-- Body -->
                 <div class="modal-body">
-                  <form>
-
-                    <!-- Username -->
+                  <form id="reset-password-form">
+                    <!-- Email -->
                     <div class="mb-3">
-                      <label for="username" class="form-label">Ваш логін:</label>
-                      <input type="text" class="form-control" id="username" required>
+                      <label for="email" class="form-label">Ваш Email:</label>
+                      <input type="email" class="form-control" id="email" required>
                     </div>
-
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline-secondary" data-bs-target="#loginModal"
+                        data-bs-toggle="modal">Назад</button>
+                      <button type="submit" class="btn btn-warning">Відправити</button>
+                    </div>
                   </form>
                 </div>
-                <div class="modal-footer">
-                  <button class="btn btn-outline-secondary" data-bs-target="#loginModal"
-                    data-bs-toggle="modal">Назад</button>
-                  <button type="submit" class="btn btn-warning">Відправити</button>
-                </div>
+
               </div>
             </div>
           </div>

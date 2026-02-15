@@ -126,3 +126,30 @@ $(registerForm).submit((e) => {
     }
 });
 })
+const resetPasswordForm = document.querySelector('#reset-password-form')
+$(resetPasswordForm).submit((e) => {
+    e.preventDefault();
+
+    const email = resetPasswordForm.querySelector("#email").value
+
+    const form = new FormData()
+    form.set("email", email)
+
+    const request = new Request(
+        "/users/password/reset/",
+        {
+            method: "POST",
+            headers: {"X-CSRFToken": csrftoken},
+            mode: "same-origin",
+            body: form
+        },
+    );
+    fetch(request)
+    .then(response => response.json())
+    .then(data => {
+        if(data.emailSent){
+            window.location.reload();
+        }
+    })
+
+})
