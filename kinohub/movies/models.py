@@ -7,6 +7,7 @@ from slugify import slugify
 class Category(models.Model):
     icon = models.CharField(max_length=24, default="fa-film", verbose_name="Іконка")
     name = models.CharField(max_length=100, unique=True, verbose_name="Назва категорії")
+    singular_name = models.CharField(max_length=100, verbose_name="Назва в однині")
     slug = models.SlugField(
         unique=True, blank=True, max_length=255, verbose_name="URL-ім'я"
     )
