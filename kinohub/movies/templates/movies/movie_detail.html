@@ -44,13 +44,14 @@
                     Garatorголосkій закадровий | LemOnka, Справжня Козацька Озвучка
 
                 </p> {% endcomment %}
-
-                <!-- IMDb Rating -->
-                <div class="d-flex align-items-center gap-2 my-3">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/IMDB_Logo_2016.svg" alt="IMDb"
-                        height="20">
-                    <span class="text-warning fs-7"><strong>{{ movie.imdb }}</strong></span>
-                </div>
+                {% if movie.imdb != 0.0 %}
+                    <!-- IMDb Rating -->
+                    <div class="d-flex align-items-center gap-2 my-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/IMDB_Logo_2016.svg" alt="IMDb"
+                            height="20">
+                        <span class="text-warning fs-7"><strong>{{ movie.imdb }}</strong></span>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

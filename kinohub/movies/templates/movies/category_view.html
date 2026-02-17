@@ -116,7 +116,9 @@
                             <!-- Badge -->
                             <!--<span class="badge badge-top">1 сезон</span>-->
                             <span class="badge badge-top" style="top: 8px;">{{ movie.full_quality }}</span>
-                            <span class="badge badge-top" style="top: 32px;">IMDB: {{ movie.imdb }}</span>
+                            {% if movie.imdb != 0.0 %}
+                                <span class="badge badge-top" style="top: 32px;">IMDB: {{ movie.imdb }}</span>
+                            {% endif %}
 
 
                             </div>
