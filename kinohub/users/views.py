@@ -29,7 +29,7 @@ class AjaxPasswordResetView(PasswordResetView):
                 request,
                 messages.INFO,
                 (
-                    f"Лист для зміни пароля було надіслано на адресу"
+                    f"Лист для зміни пароля було надіслано на адресу "
                     f"{form.cleaned_data['email']}"
                 ),
             )
