@@ -11,7 +11,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="{% static 'movies/style.css' %}">
+  <link rel="stylesheet" href="{% static 'movies/css/style.css' %}">
+  <style>body {background-image: url("{% static 'movies/img/background.jpg' %}");}</style>
   {% block head %}{% endblock %}
 </head>
 
@@ -24,7 +25,7 @@
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
 
         <a href="/" class="logo-link d-flex align-items-center mb-2 mb-lg-0 text-decoration-none">
-          <img class="logo bi me-2" width="50" aria-label="kinohub-logo" src="https://i.ibb.co/Y7y2Q0rB/minion.png"
+          <img class="logo bi me-2" width="50" aria-label="kinohub-logo" src="{% static "movies/img/logo.png" %}"
             alt="">
           <span class="fs-5 me-3 text-warning">Kinohub</span>
         </a>
@@ -89,6 +90,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                   </div>
                   <form id="login-form">
+                    {% csrf_token %}
                     <!-- Username -->
                     <div class="mb-3">
                       <label for="username" class="form-label">Ваш логін:</label>
@@ -145,6 +147,7 @@
                 <!-- Body -->
                 <div class="modal-body">
                   <form id="reset-password-form">
+                    {% csrf_token %}
                     <!-- Email -->
                     <div class="mb-3">
                       <label for="email" class="form-label">Ваш Email:</label>
@@ -176,6 +179,7 @@
                 <!-- Body -->
                 <div class="modal-body">
                   <form id="register-form">
+                    {% csrf_token %}
                     <div id="register-alert"
                     class="alert alert-danger alert-dismissible fade show d-none"
                     role="alert">
@@ -284,7 +288,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
   {% block scripts %}{% endblock scripts %}
-  <script src="{% static 'movies/main.js' %}"></script>
+  <script src="{% static 'movies/js/main.js' %}"></script>
   {% block script %}{% endblock %}
 </body>
 

@@ -1,0 +1,45 @@
+/* Container to control width */
+.slider-container {
+  margin: 15px 0;
+}
+
+/* The base slider track */
+.noUi-target {
+  background: #ddd; /* subtle grey background */
+  border-radius: 10px;
+  height: 14px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* The colored "connect" bar that fills between handles */
+.noUi-connect {
+  background: #d39e00; /* gold */
+  border-radius: 10px;
+  box-shadow: none;
+}
+
+/* The handle */
+.noUi-handle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2.5px solid #d39e00;
+  background: #fff;
+  top: -7px; /* vertically center handle on track */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+/* Handle hover effect */
+.noUi-handle:hover,
+.noUi-handle:focus {
+  box-shadow: 0 0 8px 2px #ffc107;
+}
+
+
+
+/* Optional: Disabled "connect" if you want separate handles with gaps */
+/* .noUi-connect {
+  background: transparent;
+} */
