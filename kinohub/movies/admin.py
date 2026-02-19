@@ -9,6 +9,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_filter = ("is_visible_on_home",)
     ordering = ("position",)
     prepopulated_fields = {"slug": ("name",)}
+    autocomplete_fields = ["genres_in_filter"]
 
 
 class PlayerInline(admin.TabularInline):

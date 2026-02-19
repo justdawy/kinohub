@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.views import generic
 
 from movies.forms import SearchForm
-from movies.models import Category, Genre, Movie
+from movies.models import Category, Movie
 
 
 class SearchListView(generic.ListView):
@@ -83,7 +83,7 @@ class CategoryDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        genres = Genre.objects.all()
+        genres = self.object.genres_in_filter.all()
         form = SearchForm(self.request.GET, genres=genres)
 
         # copy GET params except "page"
