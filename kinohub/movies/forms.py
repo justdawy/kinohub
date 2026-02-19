@@ -3,30 +3,20 @@ from django import forms
 
 class SearchForm(forms.Form):
     title = forms.CharField(
-        label="Title",
+        label="Назва",
         max_length=120,
         required=False,
-        widget=forms.TextInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "e.g. Futurama",
-            }
-        ),
+        widget=forms.TextInput(attrs={"class": "form-control"}),
     )
     year = forms.IntegerField(
-        label="Year",
+        label="Рік",
         max_value=2026,
         min_value=1920,
         required=False,
-        widget=forms.NumberInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "e.g. 2022",
-            }
-        ),
+        widget=forms.NumberInput(attrs={"class": "form-control"}),
     )
     min_imdb_rating = forms.DecimalField(
-        label="Min. IMDB Rating",
+        label="Мінімальний IMDB",
         min_value=1,
         max_value=10,
         decimal_places=1,
@@ -41,7 +31,7 @@ class SearchForm(forms.Form):
         ),
     )
     genres = forms.ChoiceField(
-        label="Genre",
+        label="Жанр",
         required=False,
         widget=forms.Select(attrs={"class": "form-select"}),
     )
