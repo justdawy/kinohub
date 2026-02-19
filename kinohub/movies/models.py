@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils.timezone import now
@@ -162,6 +163,32 @@ class Movie(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+
+class Review(models.Model):
+    movie = models.ForeignKey(Movie, related_name="reviews", on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="reviews",
+        blank=True,
+        null=True,
+    )
+
+    guest_name = models.CharField(max_length=100, blank=True)
+
+    parent = models.ForeignKey(
+        "self", null=True, blank=True, related_name="replies", on_delete=models.CASCADE
+    )
+    content = models.TextField()
+
+    created_on = models.DateTimeField("Дата публікації", default=now)
+    changed_on = models.DateTimeField("Дата редагування", auto_now=True)
+
+    def __str__(self):
+        if self.user:
+            return f"Коментар від {self.user.username} в {self.movie.title}"
+        return f"Коментар від {self.guest_name or 'Guest'}"
 
 
 class Player(models.Model):

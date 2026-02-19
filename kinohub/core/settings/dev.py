@@ -6,3 +6,6 @@ ALLOWED_HOSTS = ["*"]
 INTERNAL_IPS = ["127.0.0.1"]
 
 PROXY_URL = config("PROXY_URL")
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"

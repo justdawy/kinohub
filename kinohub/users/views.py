@@ -1,6 +1,26 @@
 from allauth.account.views import LoginView, PasswordResetView, SignupView
 from django.contrib import messages
-from django.http import JsonResponse
+from django.http import HttpResponseNotAllowed, JsonResponse
+from movies.models import Movie, Review
+
+
+def create_review(request):
+    if request.method == "POST":
+        movieId = request.POST.get("movieId")
+        content = request.POST.get("content")
+        if movieId and content:
+            try:
+                movie = Movie.objects.get(id=movieId)
+                review = Review(movie=movie, content=content)
+                if request.user.is_authenticated:
+                    review.user = request.user
+                else:
+                    review.guest_name = request.POST.get("guest_name")
+                review.save()
+                return JsonResponse({"created": True})
+            except Exception:
+                return JsonResponse({"created": False})
+    return HttpResponseNotAllowed(request)
 
 
 class AjaxFormMixin:

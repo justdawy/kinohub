@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Actor, Category, Genre, Item, Movie, Player, Subtitle
+from .models import Actor, Category, Genre, Item, Movie, Player, Review, Subtitle
 
 
 @admin.register(Category)
@@ -23,6 +23,12 @@ class MovieAdmin(admin.ModelAdmin):
     autocomplete_fields = ["actors", "genres"]
     prepopulated_fields = {"slug": ("title",)}
     inlines = [PlayerInline]
+
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    search_fields = ["title"]
+    autocomplete_fields = ["movie", "user", "parent"]
 
 
 class SubtitleInline(admin.TabularInline):

@@ -126,12 +126,152 @@
                         <i class="fab fa-telegram"></i>
                     </button>
                 </div> -->
+<div class="container-fluid bg-dark text-white py-4 my-5">
+            <div class="row">
+                <div class="col-12">
+                    <!-- Comment header -->
+                    <h5 class="mb-4 text-warning">
+                        <i class="fas fa-comment text-warning"></i> Відгуки ({{ movie_reviews.count }})
+                    </h5>
+
+                    <!-- Comment input section -->
+                    <div class="mb-4 p-4 rounded" style="background-color: rgba(255,255,255,0.05);">
+                        <textarea class="form-control text-white border-secondary mb-3" id="commentTextarea" rows="5"
+                            placeholder="Написати відгук"></textarea>
+
+                        <!-- Rules (shown after focus) -->
+                        <div id="commentRules" class="mb-3" style="display: none;">
+                            <div class="p-3 rounded border border-secondary text-muted small">
+                                <p class="mb-1">1) дозволені коментарі виключно українською мовою</p>
+                                <p class="mb-1">2) заборонена нецензурна лексика, гомофобія та тема політики</p>
+                                <p class="mb-1">3) заборонені питання про вихід наступних серій/сезонів</p>
+                                {% comment %} <p class="mb-0">4) використовуйте [s]текст[/s] для спойлерів</p> {% endcomment %}
+                            </div>
+
+
+                        </div>
+                        {% if not user.is_authenticated %}
+                        <!-- Name input -->
+                        <div class="mb-3">
+                            <input type="text" class="form-control text-white border-secondary" id="userName"
+                                placeholder="Ваше ім'я" style="max-width: 300px;">
+                        </div>
+                        {% endif %}
+                        <!-- Submit button -->
+                        <button id="addReviewButton" data-movie-id="{{ movie.id }}" type="submit" class="btn btn-warning">Додати відгук</button>
+                    </div>
+
+                    <script>
+                        // Show rules when textarea is focused
+                        document.getElementById('commentTextarea').addEventListener('focus', function () {
+                            document.getElementById('commentRules').style.display = 'block';
+                        });
+                    </script>
+
+                    <!-- Comments list -->
+                    <div class="comments-list">
+                    {% for review in movie_reviews %}
+                        <div class="comment-item mb-4 p-3 rounded" style="background-color: rgba(255,255,255,0.05);">
+                            <div class="d-flex gap-3">
+                            <!-- Avatar -->
+                            <div class="flex-shrink-0">
+                                {% if review.user %}
+                                    <img
+                                    src="{{ review.user.profile_image.url }}"
+                                    alt="{{ review.user.username }}"
+                                    class="rounded-circle"
+                                    style="width: 40px; height: 40px; object-fit: cover;">
+                                {% else %}
+                                <img
+                                    src="{% static "users/img/default-avatar.png" %}"
+                                    alt="Гість {{ review.guest_name }}"
+                                    class="rounded-circle"
+                                    style="width: 40px; height: 40px; object-fit: cover;">
+                                {% endif %}
+                            </div>
+                            <!-- Comment content -->
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <strong>
+                                        {% if review.user %}
+                                            {{ review.user.username }}
+                                        {% else %}
+                                            Гість {{ review.guest_name }}
+                                        {% endif %}
+                                    </strong>
+                                </div>
+                                <small class="text-muted">{{ review.created_on }}</small>
+                                </div>
+                                <p class="mb-3">
+                                    {{ review.content }}
+                                </p>
+                                <!-- Like/Dislike + Reply -->
+                                <div class="d-flex gap-3 align-items-center">
+                                        {% comment %} <button class="btn btn-sm btn-link text-success text-decoration-none p-0">
+                                            <i class="fas fa-thumbs-up"></i> +121
+                                        </button>
+                                        <button class="btn btn-sm btn-link text-danger text-decoration-none p-0">
+                                            <i class="fas fa-thumbs-down"></i>
+                                        </button> {% endcomment %}
+                                        <a href="#" class="text-warning text-decoration-none small">Відповісти</a>
+                                </div>
+                                {% for reply in review.replies.all %}
+                                <!-- REPLY - indented -->
+                                <div class="comment-reply ms-4 mt-3 p-3 rounded"
+                                    style="background-color: rgba(255,255,255,0.05); border-left: 3px solid #ffc107;">
+                                    <div class="d-flex gap-3">
+                                    <!-- Avatar -->
+                                    <div class="flex-shrink-0">
+                                        <img
+                                        src="{{ reply.user.profile_image.url }}"
+                                        alt="{{ reply.user.username }}"
+                                        class="rounded-circle"
+                                        style="width: 40px; height: 40px; object-fit: cover;">
+                                    </div>
+                                    <!-- Reply content -->
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <div>
+                                            <strong>{{ reply.user.username }}</strong>
+                                        </div>
+                                        <small class="text-muted">{{ reply.created_on }}</small>
+                                        </div>
+
+                                        <p class="mb-3">
+                                            {{ reply.content }}
+                                        </p>
+                                        {% comment %} <!-- Like/Dislike -->
+                                        <div class="d-flex gap-3 align-items-center">
+                                                <button class="btn btn-sm btn-link text-success text-decoration-none p-0">
+                                                    <i class="fas fa-thumbs-up"></i> +121
+                                                </button>
+                                                <button class="btn btn-sm btn-link text-danger text-decoration-none p-0">
+                                                    <i class="fas fa-thumbs-down"></i>
+                                                </button>
+
+                                        </div> {% endcomment %}
+                                    </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
 </div>
 
 {% endblock %}
 
-{% block scripts %}<script src="{% static 'movies/js/playerjs.js' %}" type="text/javascript"></script> {% endblock %}
+{% block scripts %}
+<script src="{% static 'movies/js/playerjs.js' %}" type="text/javascript"></script>
+<script src="{% static "movies/js/reviews.js" %}" type="text/javascript"></script>
+{% endblock %}
 
 {% block script %}
 <script>

@@ -71,6 +71,10 @@ class MovieDetailView(generic.DetailView):
                 players_list.append(folder)
 
         context["players_list"] = players_list
+        movie_reviews = self.object.reviews.filter(parent__isnull=True).order_by(
+            "-created_on"
+        )
+        context["movie_reviews"] = movie_reviews
         return context
 
 

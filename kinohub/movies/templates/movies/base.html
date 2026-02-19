@@ -49,14 +49,13 @@
 
             <a href="#" class="d-block link-light text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
               aria-expanded="false">
-              <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-
+              <img src="{{ user.profile_image.url }}" width="32" height="32" class="rounded-circle">
             </a>
 
             <ul class="dropdown-menu text-small">
               <li><a class="dropdown-item" href="#">Мій профіль</a></li>
               <li><a class="dropdown-item" href="#">Мої списки (0)</a></li>
-              <li><a class="dropdown-item" href="#">Мої коментарі (0)</a></li>
+              <li><a class="dropdown-item" href="#">Мої коментарі ({{ user.reviews.count }})</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
