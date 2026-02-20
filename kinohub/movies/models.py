@@ -185,10 +185,14 @@ class Review(models.Model):
     created_on = models.DateTimeField("Дата публікації", default=now)
     changed_on = models.DateTimeField("Дата редагування", auto_now=True)
 
+    class Meta:
+        verbose_name = "Відгук"
+        verbose_name_plural = "Відгуки"
+
     def __str__(self):
         if self.user:
-            return f"Коментар від {self.user.username} в {self.movie.title}"
-        return f"Коментар від {self.guest_name or 'Guest'}"
+            return f"Відгук від {self.user.username} до {self.movie.title}"
+        return f"Відгук від {self.guest_name or 'Guest'} до {self.movie.title}"
 
 
 class Player(models.Model):
