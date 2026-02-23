@@ -53,7 +53,7 @@
             </a>
 
             <ul class="dropdown-menu text-small">
-              <li><a class="dropdown-item" href="#">Мій профіль</a></li>
+              <li><a class="dropdown-item" href="{% url 'account_profile' %}">Мій профіль</a></li>
               <li><a class="dropdown-item" href="#">Мої списки (0)</a></li>
               <li><a class="dropdown-item" href="#">Мої коментарі ({{ user.reviews.count }})</a></li>
               <li>

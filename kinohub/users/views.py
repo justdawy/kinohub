@@ -1,6 +1,7 @@
 from allauth.account.views import LoginView, PasswordResetView, SignupView
 from django.contrib import messages
 from django.http import HttpResponseNotAllowed, JsonResponse
+from django.views.generic import TemplateView
 from movies.models import Movie, Review
 
 
@@ -54,3 +55,7 @@ class AjaxPasswordResetView(PasswordResetView):
                 ),
             )
         return JsonResponse({"emailSent": True})
+
+
+class UserProfileTemplateView(TemplateView):
+    template_name = "users/profile.html"
