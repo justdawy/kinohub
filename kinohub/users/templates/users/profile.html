@@ -16,33 +16,26 @@
 
                         <!-- Profile Image -->
                         <div class="col-md-4 text-center mb-3 mb-md-0">
-                            {% if user.profile_image %}
                                 <img
                                     src="{{ user.profile_image.url }}"
                                     alt="Profile picture"
                                     class="img-fluid rounded-circle"
                                     style="max-width: 180px; height: 180px; object-fit: cover;"
                                 >
-                            {% else %}
-                                <img
-                                    src="{% static 'images/default-avatar.png' %}"
-                                    alt="Default profile picture"
-                                    class="img-fluid rounded-circle"
-                                    style="max-width: 180px;"
-                                >
-                            {% endif %}
                         </div>
 
                         <!-- User Info -->
                         <div class="col-md-8">
-                            <h3 class="mb-2">{{ user.username }}</h3>
+                            <h3 class="mb-2">
+                                Ім'я користувача: {{ user.username }}
+                            </h3>
                             <p class="text-muted mb-1">
-                                {{ user.email }}
+                                E-mail: {{ user.email }}
                             </p>
 
                             {% if user.first_name or user.last_name %}
                                 <p class="mb-2">
-                                    {{ user.first_name }} {{ user.last_name }}
+                                    Повне ім'я: {{ user.first_name }} {{ user.last_name }}
                                 </p>
                             {% endif %}
 
@@ -53,6 +46,104 @@
                                 </p>
                             {% endif %}
 
+                            <p>
+                                Кількість відгуків: {{ user.reviews.count }}
+                            </p>
+                            <!-- login modal button -->
+          <button type="button" class="btn btn-warning" data-bs-theme="modal" data-bs-toggle="modal"
+            data-bs-target="#editProfileModal">Редагувати профіль</button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+
+                            <!-- Header -->
+                            <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="loginModalLabel">Редагування профіля</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <!-- Body -->
+                            <div class="modal-body">
+                            <div id="login-alert" class="alert alert-danger alert-dismissible fade show d-none" role="alert">
+                                <i class="fa-solid fa-circle-xmark text-error"></i> Неправильний пароль або ім'я користувача
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                            <form id="edit-profile-form">
+                                {% csrf_token %}
+                                <div id="edit-alert"
+                    class="alert alert-danger alert-dismissible fade show d-none"
+                    role="alert">
+
+                      <i class="fa-solid fa-circle-xmark text-error"></i>
+                      <strong>Неуспішне оновлення профілю:</strong>
+                      <ul class="mb-0 mt-2 error-list"></ul>
+                      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                                <!-- Email -->
+                    <div class="mb-3">
+                      <label for="email" class="form-label">Ваш E-Mail:</label>
+                      <input type="email" class="form-control" id="email" value="{{ user.email }}" required>
+                    </div>
+
+
+                                                   <!-- Password -->
+                    <div class="mb-3">
+                      <label for="old-password" class="form-label">Старий пароль:</label>
+
+                      <div class="input-group">
+                        <input type="password" class="form-control" id="old-password" required>
+
+                        <button type="button" class="input-group-text" id="toggle-password" tabindex="-1"
+                          aria-label="Toggle password visibility">
+                          <!-- Eye icon -->
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                            <path fill="currentColor" fill-rule="evenodd"
+                              d="M5.914 7.591c-1.572 1.45-2.625 3.15-3.143 4.106a.624.624 0 0 0 0 .606c.518.955 1.57 2.656 3.143 4.106C7.482 17.855 9.506 19 12 19s4.518-1.145 6.085-2.591c1.573-1.45 2.626-3.15 3.145-4.106a.624.624 0 0 0 0-.606c-.519-.955-1.572-2.656-3.145-4.106C16.518 6.145 14.495 5 12 5 9.506 5 7.482 6.146 5.914 7.591ZM4.56 6.121C6.36 4.459 8.846 3 12 3s5.64 1.459 7.441 3.12c1.797 1.658 2.974 3.568 3.547 4.624a2.624 2.624 0 0 1 0 2.512c-.573 1.056-1.75 2.966-3.547 4.623C17.64 19.541 15.154 21 12 21s-5.64-1.459-7.441-3.12c-1.797-1.658-2.974-3.568-3.547-4.624a2.624 2.624 0 0 1 0-2.512c.573-1.056 1.75-2.966 3.547-4.623ZM12 9.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5ZM7.5 12a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0Z"
+                              clip-rule="evenodd" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                    <!-- Repeat password -->
+                    <div class="mb-3">
+                      <label for="password" class="form-label">Новий пароль:</label>
+
+                      <div class="input-group">
+                        <input type="password" class="form-control" id="newPassword" required>
+                        <button type="button" class="input-group-text" id="toggle-password" tabindex="-1"
+                          aria-label="Toggle password visibility">
+                          <!-- Eye icon -->
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                            <path fill="currentColor" fill-rule="evenodd"
+                              d="M5.914 7.591c-1.572 1.45-2.625 3.15-3.143 4.106a.624.624 0 0 0 0 .606c.518.955 1.57 2.656 3.143 4.106C7.482 17.855 9.506 19 12 19s4.518-1.145 6.085-2.591c1.573-1.45 2.626-3.15 3.145-4.106a.624.624 0 0 0 0-.606c-.519-.955-1.572-2.656-3.145-4.106C16.518 6.145 14.495 5 12 5 9.506 5 7.482 6.146 5.914 7.591ZM4.56 6.121C6.36 4.459 8.846 3 12 3s5.64 1.459 7.441 3.12c1.797 1.658 2.974 3.568 3.547 4.624a2.624 2.624 0 0 1 0 2.512c-.573 1.056-1.75 2.966-3.547 4.623C17.64 19.541 15.154 21 12 21s-5.64-1.459-7.441-3.12c-1.797-1.658-2.974-3.568-3.547-4.624a2.624 2.624 0 0 1 0-2.512c.573-1.056 1.75-2.966 3.547-4.623ZM12 9.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5ZM7.5 12a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0Z"
+                              clip-rule="evenodd" />
+                          </svg>
+                        </button>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Repeat password -->
+                    <div class="mb-3">
+                      <label for="password" class="form-label">Повторіть новий пароль:</label>
+
+                      <div class="input-group">
+                        <input type="password" class="form-control" id="confirmNewPassword" required>
+                        </button>
+                      </div>
+                    </div>
+
+
+                                <div class="modal-footer">
+                            <button type="submit" class="btn btn-warning">Зберегти</button>
+                            </div>
+                            </form>
+                            </div>
+
+                        </div>
+                        </div>
+                    </div>
                             {% comment %} <div class="mt-3">
                                 <a class="btn btn-primary btn-sm">
                                     Edit Profile

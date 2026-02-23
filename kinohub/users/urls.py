@@ -6,6 +6,7 @@ from users.views import (
     AjaxSignupView,
     UserProfileTemplateView,
     create_review,
+    profile_edit,
 )
 
 urlpatterns = [
@@ -18,5 +19,6 @@ urlpatterns = [
         name="account_reset_password",
     ),
     path("profile/", UserProfileTemplateView.as_view(), name="account_profile"),
+    path("profile/edit/", profile_edit, name="profile_edit"),
     path("", include("allauth.urls")),
 ]

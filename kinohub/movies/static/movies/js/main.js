@@ -153,3 +153,61 @@ $(resetPasswordForm).submit((e) => {
     })
 
 })
+
+document.addEventListener("DOMContentLoaded", function () {
+    const params = new URLSearchParams(window.location.search);
+
+    if(params.get("login") === "1"){
+        var loginModal = new bootstrap.Modal(document.getElementById("loginModal"))
+        loginModal.show()
+    }
+})
+const editProfileForm = document.querySelector("#edit-profile-form")
+$(editProfileForm).submit((e) => {
+    e.preventDefault()
+
+    const email = editProfileForm.querySelector("#email").value
+    const oldPassword = editProfileForm.querySelector("#old-password").value
+    const newPassword = editProfileForm.querySelector("#newPassword").value
+    const confirmNewPassword = editProfileForm.querySelector("#confirmNewPassword").value
+
+    const form = new FormData()
+    form.set("email", email)
+    form.set("oldPassword", oldPassword)
+    form.set("newPassword", newPassword)
+    form.set("confirmNewPassword", confirmNewPassword)
+
+    fetch(
+        "/users/profile/edit/",
+        {
+            method: "POST",
+            headers: {"X-CSRFToken": csrftoken},
+            mode: "same-origin",
+            body: form
+        }
+    ).then(response => response.json()).then(
+        data => {
+            if(data.success){
+                window.location.reload()
+            }
+            else {
+                const alertBox = document.querySelector("#edit-alert");
+        const errorList = alertBox.querySelector(".error-list");
+
+        errorList.innerHTML = ""; // clear previous errors
+
+        if (data.errors) {
+            for (const field in data.errors) {
+                data.errors[field].forEach(error => {
+                    const li = document.createElement("li");
+                    li.textContent = error;
+                    errorList.appendChild(li);
+                });
+            }
+
+            alertBox.classList.remove("d-none");
+        }
+            }
+        }
+    )
+})

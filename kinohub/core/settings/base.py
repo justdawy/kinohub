@@ -9,7 +9,8 @@ SITE_NAME = "Kinohub"
 
 # allauth
 ACCOUNT_LOGOUT_ON_GET = True
-
+LOGIN_URL = "/?login=1"
+LOGIN_REDIRECT_URL = "/"
 
 # email
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
