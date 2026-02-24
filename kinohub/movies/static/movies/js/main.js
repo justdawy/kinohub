@@ -163,6 +163,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 })
 const editProfileForm = document.querySelector("#edit-profile-form")
+let deleteAvatar = false;
+
+const deleteBtn = document.querySelector("#deleteAvatarBtn");
+
+if (deleteBtn) {
+    deleteBtn.addEventListener("click", () => {
+        deleteAvatar = true;
+
+        document.getElementById("avatarPreview").src = "/media/images/default.png";
+
+        document.getElementById("profile_image").value = "";
+    });
+}
 $(editProfileForm).submit((e) => {
     e.preventDefault()
 
@@ -170,12 +183,19 @@ $(editProfileForm).submit((e) => {
     const oldPassword = editProfileForm.querySelector("#old-password").value
     const newPassword = editProfileForm.querySelector("#newPassword").value
     const confirmNewPassword = editProfileForm.querySelector("#confirmNewPassword").value
+    const profileImageInput = editProfileForm.querySelector("#profile_image");
 
     const form = new FormData()
     form.set("email", email)
     form.set("oldPassword", oldPassword)
     form.set("newPassword", newPassword)
     form.set("confirmNewPassword", confirmNewPassword)
+     if (profileImageInput.files.length > 0) {
+        form.append("profile_image", profileImageInput.files[0]);
+    }
+    if (deleteAvatar) {
+        form.append("deleteAvatar", "true");
+    }
 
     fetch(
         "/users/profile/edit/",
