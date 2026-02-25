@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
-from django.http import HttpResponseNotAllowed, JsonResponse
+from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 from movies.models import Movie, Review
@@ -29,7 +29,7 @@ def create_review(request):
             return JsonResponse({"created": True})
         except Exception:
             return JsonResponse({"created": False})
-    return HttpResponseNotAllowed(request)
+    return JsonResponse({"created": False})
 
 
 class AjaxFormMixin:
