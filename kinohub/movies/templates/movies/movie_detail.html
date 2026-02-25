@@ -38,7 +38,7 @@
                     <p>
                         <span class="text-muted">Актори:</span>
                         {% for actor in movie.actors.all %}
-                            <a href="#" class="text-warning text-decoration-none">{{ actor.name }}</a>
+                            <a href="{{ actor.get_absolute_url }}" class="text-warning text-decoration-none">{{ actor.name }}</a>
                             {% if not forloop.last %},{% endif %}
                         {% endfor %}
                     </p>

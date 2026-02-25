@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.views import generic
 
 from movies.forms import SearchForm
-from movies.models import Category, Movie
+from movies.models import Actor, Category, Movie
 
 
 class SearchListView(generic.ListView):
@@ -137,6 +137,32 @@ class CategoryDetailView(generic.DetailView):
         else:
             queryset = self.object.movies.filter(**kwargs).order_by("-changed_on")
         paginator = Paginator(queryset, 24)  # paginate_by
+        page = self.request.GET.get("page")
+        movies = paginator.get_page(page)
+        return movies
+
+
+class ActorDetailView(generic.DetailView):
+    model = Actor
+    template_name = "movies/actor_detail.html"
+    slug_field = "slug"
+    slug_url_kwarg = "actor_slug"
+    context_object_name = "actor"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        movies = self.get_movies()
+        context["movies"] = movies
+        context["page_range"] = movies.paginator.get_elided_page_range(
+            movies.number, on_each_side=9, on_ends=1
+        )
+        return context
+
+    def get_movies(self, **kwargs):
+        queryset = Movie.objects.filter(actors__name=self.object.name).order_by(
+            "-changed_on"
+        )
+        paginator = Paginator(queryset, 24)
         page = self.request.GET.get("page")
         movies = paginator.get_page(page)
         return movies

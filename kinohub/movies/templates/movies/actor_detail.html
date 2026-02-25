@@ -1,0 +1,82 @@
+{% extends "movies/base.html" %}
+{% block title %}{{ actor.name }}{% endblock %}
+{% block main %}
+<div>
+    <div class="container-fluid">
+        <h2 class="ctf-pl-title mb-4">
+            <span class="fas fa-glasses text-warning"></span>
+            Дивитися фільми з актором {{ actor.name }}
+        </h2>
+
+</div>
+<!--  actor movies section -->
+<section class="mb-5">
+    <div class="container-fluid my-5">
+        {% if movies %}
+            <div class="row g-3 film-row">
+                {% for movie in movies %}
+                    <!-- Card -->
+                    <div class="col-auto">
+                        <a class="text-decoration-none" href="{{ movie.get_absolute_url }}">
+                            <div class="film-card">
+                                <div class="film-poster">
+                                    <img src="{{ movie.image_url }}" alt="">
+                                    <!-- Play button -->
+                                    <div class="play-overlay">
+                                        <i class="fa fa-play"></i>
+                                    </div>
+                                    <!-- Badge -->
+                                    <span class="badge badge-top" style="top: 8px;">{{ movie.full_quality }}</span>
+                                    {% if movie.imdb != 0.0 %}<span class="badge badge-top" style="top: 32px;">IMDB: {{ movie.imdb }}</span>{% endif %}
+                                </div>
+                                <!-- Title  card-body -->
+                                <div class="film-body">
+                                    <div class="film-title ">{{ movie.title }}</div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <h1>Категорія наразі порожня.</h1>
+    {% endif %}
+</section>
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center flex-wrap">
+        {% if movies.has_previous %}
+            <li class="page-item">
+                <a class="page-link text-warning"
+                   href="?page={{ movies.previous_page_number }}">
+                    <span class="fa fas fa-angle-left"></span>
+                </a>
+            </li>
+        {% endif %}
+        {% for page in page_range %}
+            {% if page == "…" %}
+                <li class="page-item disabled">
+                    <span class="page-link">…</span>
+                </li>
+            {% elif page == movies.number %}
+                <li class="page-item active">
+                    <span class="page-link">{{ page }}</span>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link text-warning"
+                       href="?page={{ page }}">{{ page }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+        {% if movies.has_next %}
+            <li class="page-item">
+                <a class="page-link text-warning"
+                   href="?page={{ movies.next_page_number }}">
+                    <span class="fa fas fa-angle-right"></span>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endblock main %}
