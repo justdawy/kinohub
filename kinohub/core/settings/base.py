@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "allauth",
     "allauth.account",
+    "django_countries",
     "movies.apps.MoviesConfig",
     "users.apps.UsersConfig",
 ]

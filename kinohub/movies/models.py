@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils.timezone import now
+from django_countries.fields import CountryField
 from slugify import slugify
 
 
@@ -104,6 +105,28 @@ class Actor(models.Model):
         super().save(*args, **kwargs)
 
 
+class Director(models.Model):
+    name = models.CharField(
+        max_length=100,
+        unique=True,
+        verbose_name="Режисер",
+        help_text="Введіть ім'я режисера фільму"
+    )
+    slug = models.SlugField(
+        unique=True, blank=True, max_length=255, verbose_name="URL-ім'я"
+    )
+    class Meta:
+        verbose_name = "Режисер"
+        verbose_name_plural = "Режисери"
+    
+    def __str__(self):
+        return self.name
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
 class Movie(models.Model):
     FILM = 1
     SERIES = 2
@@ -122,10 +145,17 @@ class Movie(models.Model):
         related_name="movies",
         verbose_name="Категорія",
     )
-    title = models.CharField(max_length=255, verbose_name="Назва")
+    title = models.CharField(max_length=255, verbose_name="Українська назва")
     slug = models.SlugField(blank=True, max_length=255, verbose_name="URL-ім'я")
+    en_title = models.CharField(max_length=255, verbose_name="Англійська назва")
+    duration = models.DurationField(blank=True, null=True, verbose_name="Тривалість фільму")
+    country = CountryField()
     description = models.TextField(blank=True, null=True, verbose_name="Опис")
     image_url = models.URLField(blank=True, null=True, verbose_name="URL зображення")
+    trailer_url = models.URLField(blank=True, null=True, verbose_name="URL-адреса трейлера")
+    directors = models.ManyToManyField(
+        Director, help_text="Виберіть режисера для цього фільму", verbose_name="Режисери"
+    )
     full_quality = models.CharField(
         max_length=50, blank=True, null=True, verbose_name="Якість"
     )
