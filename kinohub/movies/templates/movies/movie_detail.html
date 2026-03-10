@@ -5,6 +5,7 @@
     <div class="container-fluid">
         <div class="row">
             <h2 class="text-white">{{ movie.title }}</h2>
+            <p class="text-muted"> {{ movie.en_title }} </p>
             <!-- Left column - Poster -->
             <div class="col-auto">
                 <img src="{{ movie.image_url }}"
@@ -21,12 +22,14 @@
                         <span class="text-muted">Рік виходу:</span>
                         <a class="text-warning text-decoration-none"
                            href="{{ movie.category.get_absolute_url }}?year={{ movie.release_year }}">
-                            <span class=="text-warning"> {{ movie.release_year }}
+                            <span class="text-warning"> {{ movie.release_year }}
                             </a>
                         </span>
                     </p>
-                    {% comment %} <p><span class="text-muted">Країна:</span> <span class="text-warning">{{ movie.country
-                    }}</span></p> {% endcomment %}
+                    <p>
+                        <span class="text-muted">Країна:</span>
+                        <span class="text-warning">{{ movie.country.name }}</span>
+                    </p>
                     <p>
                         <span class="text-muted">Жанр:</span>
                         {% for genre in movie.genres.all %}
@@ -48,6 +51,10 @@
                                class="text-warning text-decoration-none">{{ actor.name }}</a>
                             {% if not forloop.last %},{% endif %}
                         {% endfor %}
+                    </p>
+                    <p class="text-warning">
+                        <span class="text-muted">Тривалість:</span>
+                        <strong>{{ movie.duration }}</strong>
                     </p>
                     {% comment %} <p class="text-warning">
                     <span class="text-muted">Озвучення:</span>
