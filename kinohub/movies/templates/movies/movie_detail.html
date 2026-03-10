@@ -27,6 +27,10 @@
                         </span>
                     </p>
                     <p>
+                        <span class="text-muted">Віковий рейтинг:</span>
+                        <span class="text-warning">{{ movie.age_rating }}+</span>
+                    </p>
+                    <p>
                         <span class="text-muted">Країна:</span>
                         <span class="text-warning">{{ movie.country.name }}</span>
                     </p>
@@ -38,12 +42,13 @@
                             {% if not forloop.last %},{% endif %}
                         {% endfor %}
                     </p>
-                    {% comment %} <p>
-                    <span class="text-muted">Режисер:</span>
-                    <a href="#" class="text-warning text-decoration-none">Jen Bennett</a>,
-                    <a href="#" class="text-warning text-decoration-none">Lianne Hughes</a>,
-                    <a href="#" class="text-warning text-decoration-none">Stephanie Stine</a>
-                    </p> {% endcomment %}
+                    <p>
+                        <span class="text-muted">Режисер:</span>
+                        {% for director in movie.directors.all %}
+                            <a href="#" class="text-warning text-decoration-none">{{ director.name }}</a>
+                            {% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    </p>
                     <p>
                         <span class="text-muted">Актори:</span>
                         {% for actor in movie.actors.all %}
@@ -68,7 +73,7 @@
                             <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/IMDB_Logo_2016.svg"
                                  alt="IMDb"
                                  height="20">
-                            <span class="text-warning fs-7"><strong>{{ movie.imdb }}</strong></span>
+                            <span class="text-warning fs-7"><strong>{{ movie.imdb }}/{{ movie.imdb_votes }}</strong></span>
                         </div>
                     {% endif %}
                 </div>

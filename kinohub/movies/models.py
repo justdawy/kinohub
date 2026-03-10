@@ -139,6 +139,14 @@ class Movie(models.Model):
         choices=MOVIE_TYPE_CHOICES, default=1, verbose_name="Тип"
     )
 
+    AGE_CHOICES = [
+        (0, "0+"),
+        (6, "6+"),
+        (12, "12+"),
+        (16, "16+"),
+        (18, "18+"),
+    ]
+
     category = models.ForeignKey(
         Category,
         on_delete=models.RESTRICT,
@@ -150,6 +158,7 @@ class Movie(models.Model):
     en_title = models.CharField(max_length=255, verbose_name="Англійська назва")
     duration = models.DurationField(blank=True, null=True, verbose_name="Тривалість фільму")
     country = CountryField()
+    age_rating = models.IntegerField(blank=True, null=True, choices=AGE_CHOICES)
     description = models.TextField(blank=True, null=True, verbose_name="Опис")
     image_url = models.URLField(blank=True, null=True, verbose_name="URL зображення")
     trailer_url = models.URLField(blank=True, null=True, verbose_name="URL-адреса трейлера")
@@ -160,6 +169,7 @@ class Movie(models.Model):
         max_length=50, blank=True, null=True, verbose_name="Якість"
     )
     imdb = models.FloatField(blank=True, null=True, verbose_name="IMDb")
+    imdb_votes = models.IntegerField(blank=True, null=True, verbose_name="Кількість голосів IMDB")
     release_year = models.PositiveIntegerField(
         blank=True, null=True, verbose_name="Рік випуску"
     )
