@@ -23,7 +23,7 @@ class SearchListView(generic.ListView):
         if not title:
             return []
         elif title.isascii():
-            return Movie.objects.filter(slug__icontains=title).order_by("-changed_on")
+            return Movie.objects.filter(en_title__icontains=title).order_by("-changed_on")
         else:
             return Movie.objects.filter(title__icontains=title).order_by("-changed_on")
 
@@ -107,7 +107,7 @@ class CategoryDetailView(generic.DetailView):
 
             title = form.cleaned_data.get("title")
             if title.isascii():
-                filters["slug__icontains"] = title
+                filters["en_title__icontains"] = title
             else:
                 filters["title__icontains"] = title
 
