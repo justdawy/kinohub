@@ -106,7 +106,8 @@
             <div class="d-flex justify-content-between align-items-center p-3">
                 <!-- Left tabs -->
                 <div class="d-flex gap-2">
-                    <button class="btn btn-warning active">Плеєр</button>
+                    <button id="playerBtn" class="btn btn-warning active">Плеєр</button>
+                    <button id="trailerBtn" class="btn btn-warning">Трейлер</button>
                 </div>
                 <!-- Right controls -->
                 <div class="d-flex gap-3 align-items-center">
@@ -120,6 +121,9 @@
                 </div>
             </div>
             <div id="player" class="w-100"></div>
+            <div id="trailer" class="w-100" hidden>
+               <div style="padding-bottom: 56.25%; position: relative;"><iframe referrerpolicy='strict-origin-when-cross-origin' width="100%" height="100%" src="{{ movie.trailer_url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"  style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;"></iframe></div> 
+            </div>
         </div>
         <!-- Like/Dislike and Share -->
         <!-- <div class="d-flex justify-content-between align-items-center p-3">
@@ -295,5 +299,25 @@
         id: "player",
         file: {{ players_list| safe }}
     });
+    const trailerBtn = document.querySelector("#trailerBtn")
+    const playerBtn = document.querySelector("#playerBtn")
+    if(trailerBtn){
+        trailerBtn.addEventListener('click', () => {
+            playerBtn.classList.remove("active")
+            trailerBtn.classList.add("active")
+            document.getElementById("trailer").hidden = false;
+            document.getElementById("player").hidden = true;
+        })
+    }
+    if(playerBtn){
+        playerBtn.addEventListener('click', () => {
+            trailerBtn.classList.remove("active")
+            playerBtn.classList.add("active")
+            document.getElementById("player").hidden = false;
+            document.getElementById("trailer").hidden = true;
+        })
+    }
+    
+
     </script>
 {% endblock %}
