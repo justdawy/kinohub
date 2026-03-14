@@ -5,20 +5,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0005_director_alter_review_options_movie_country_and_more'),
+        ("movies", "0005_director_alter_review_options_movie_country_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='movie',
-            name='country',
+            model_name="movie",
+            name="country",
             field=django_countries.fields.CountryField(max_length=2),
         ),
         migrations.AlterField(
-            model_name='movie',
-            name='en_title',
-            field=models.CharField(max_length=255, verbose_name='Англійська назва'),
+            model_name="movie",
+            name="en_title",
+            field=models.CharField(max_length=255, verbose_name="Англійська назва"),
         ),
     ]

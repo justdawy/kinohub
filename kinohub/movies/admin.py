@@ -1,6 +1,16 @@
 from django.contrib import admin
 
-from .models import Actor, Category, Genre, Item, Movie, Player, Review, Subtitle, Director
+from .models import (
+    Actor,
+    Category,
+    Director,
+    Genre,
+    Item,
+    Movie,
+    Player,
+    Review,
+    Subtitle,
+)
 
 
 @admin.register(Category)
@@ -66,6 +76,7 @@ class GenreAdmin(admin.ModelAdmin):
 @admin.register(Actor)
 class ActorAdmin(admin.ModelAdmin):
     search_fields = ["name"]
+
 
 @admin.register(Director)
 class DirectorAdmin(admin.ModelAdmin):

@@ -80,16 +80,22 @@ def profile_edit(request):
     new_password = request.POST.get("newPassword", "")
     confirm_new_password = request.POST.get("confirmNewPassword", "")
     if request.FILES.get("profile_image"):
-        if user.profile_image and user.profile_image.name != "images/default-avatar.png":
+        if (
+            user.profile_image
+            and user.profile_image.name != "images/default-avatar.png"
+        ):
             user.profile_image.delete(save=False)
 
         user.profile_image = request.FILES["profile_image"]
         user.save()
     if request.POST.get("deleteAvatar") == "true":
-        if user.profile_image and user.profile_image.name != "images/default-avatar.png":
+        if (
+            user.profile_image
+            and user.profile_image.name != "images/default-avatar.png"
+        ):
             user.profile_image.delete(save=False)
 
-        user.profile_image = user._meta.get_field('profile_image').get_default()
+        user.profile_image = user._meta.get_field("profile_image").get_default()
         user.save()
     if email and email != user.email:
         try:

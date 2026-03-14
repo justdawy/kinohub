@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0006_alter_movie_country_alter_movie_en_title'),
+        ("movies", "0006_alter_movie_country_alter_movie_en_title"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='movie',
-            name='imdb_votes',
-            field=models.IntegerField(blank=True, null=True, verbose_name='Кількість голосів IMDB'),
+            model_name="movie",
+            name="imdb_votes",
+            field=models.IntegerField(
+                blank=True, null=True, verbose_name="Кількість голосів IMDB"
+            ),
         ),
     ]

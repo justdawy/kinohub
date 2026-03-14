@@ -5,56 +5,88 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0004_review_guest_name_alter_review_user'),
+        ("movies", "0004_review_guest_name_alter_review_user"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Director',
+            name="Director",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text="Введіть ім'я режисера фільму", max_length=100, unique=True, verbose_name='Режисер')),
-                ('slug', models.SlugField(blank=True, max_length=255, unique=True, verbose_name="URL-ім'я")),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text="Введіть ім'я режисера фільму",
+                        max_length=100,
+                        unique=True,
+                        verbose_name="Режисер",
+                    ),
+                ),
+                (
+                    "slug",
+                    models.SlugField(
+                        blank=True, max_length=255, unique=True, verbose_name="URL-ім'я"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Режисер',
-                'verbose_name_plural': 'Режисери',
+                "verbose_name": "Режисер",
+                "verbose_name_plural": "Режисери",
             },
         ),
         migrations.AlterModelOptions(
-            name='review',
-            options={'verbose_name': 'Відгук', 'verbose_name_plural': 'Відгуки'},
+            name="review",
+            options={"verbose_name": "Відгук", "verbose_name_plural": "Відгуки"},
         ),
         migrations.AddField(
-            model_name='movie',
-            name='country',
-            field=django_countries.fields.CountryField(blank=True, max_length=2, null=True),
+            model_name="movie",
+            name="country",
+            field=django_countries.fields.CountryField(
+                blank=True, max_length=2, null=True
+            ),
         ),
         migrations.AddField(
-            model_name='movie',
-            name='duration',
-            field=models.DurationField(blank=True, null=True, verbose_name='Тривалість фільму'),
+            model_name="movie",
+            name="duration",
+            field=models.DurationField(
+                blank=True, null=True, verbose_name="Тривалість фільму"
+            ),
         ),
         migrations.AddField(
-            model_name='movie',
-            name='en_title',
-            field=models.CharField(max_length=255, null=True, verbose_name='Англійська назва'),
+            model_name="movie",
+            name="en_title",
+            field=models.CharField(
+                max_length=255, null=True, verbose_name="Англійська назва"
+            ),
         ),
         migrations.AddField(
-            model_name='movie',
-            name='trailer_url',
-            field=models.URLField(blank=True, null=True, verbose_name='URL-адреса трейлера'),
+            model_name="movie",
+            name="trailer_url",
+            field=models.URLField(
+                blank=True, null=True, verbose_name="URL-адреса трейлера"
+            ),
         ),
         migrations.AlterField(
-            model_name='movie',
-            name='title',
-            field=models.CharField(max_length=255, verbose_name='Українська назва'),
+            model_name="movie",
+            name="title",
+            field=models.CharField(max_length=255, verbose_name="Українська назва"),
         ),
         migrations.AddField(
-            model_name='movie',
-            name='directors',
-            field=models.ManyToManyField(help_text='Виберіть режисера для цього фільму', to='movies.director', verbose_name='Режисери'),
+            model_name="movie",
+            name="directors",
+            field=models.ManyToManyField(
+                help_text="Виберіть режисера для цього фільму",
+                to="movies.director",
+                verbose_name="Режисери",
+            ),
         ),
     ]

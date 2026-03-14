@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-12">
                 <h2 class="text-white">{{ movie.title }}</h2>
-                <p class="text-muted"> {{ movie.en_title }} </p>
+                <p class="text-muted">{{ movie.en_title }}</p>
             </div>
             <!-- Left column - Poster -->
             <div class="col-auto">
@@ -122,7 +122,19 @@
             </div>
             <div id="player" class="w-100"></div>
             <div id="trailer" class="w-100" hidden>
-               <div style="padding-bottom: 56.25%; position: relative;"><iframe referrerpolicy='strict-origin-when-cross-origin' width="100%" height="100%" src="{{ movie.trailer_url }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"  style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;"></iframe></div> 
+                <div style="padding-bottom: 56.25%; position: relative;">
+                    <iframe referrerpolicy='strict-origin-when-cross-origin'
+                            width="100%"
+                            height="100%"
+                            src="{{ movie.trailer_url }}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                            style="position: absolute;
+                                   top: 0px;
+                                   left: 0px;
+                                   width: 100%;
+                                   height: 100%"></iframe>
+                </div>
             </div>
         </div>
         <!-- Like/Dislike and Share -->
@@ -264,29 +276,19 @@
                                                             <small class="text-muted">{{ reply.created_on }}</small>
                                                         </div>
                                                         <p class="mb-3">{{ reply.content }}</p>
-                                                        {% comment %} <!-- Like/Dislike -->
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="d-flex gap-3 align-items-center">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button class="btn btn-sm btn-link text-success text-decoration-none p-0">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="fas fa-thumbs-up"></i> +121
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <button class="btn btn-sm btn-link text-danger text-decoration-none p-0">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="fas fa-thumbs-down"></i>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </button>
-
-                                            </div> {% endcomment %}
-                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
-                            {% endfor %}
-                        </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
-</div>
-</div>
-</div>
 </div>
 {% endblock %}
 {% block scripts %}
@@ -317,7 +319,7 @@
             document.getElementById("trailer").hidden = true;
         })
     }
-    
+
 
     </script>
 {% endblock %}

@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('movies', '0007_movie_imdb_votes'),
+        ("movies", "0007_movie_imdb_votes"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='movie',
-            name='age_rating',
-            field=models.IntegerField(blank=True, choices=[(0, '0+'), (6, '6+'), (12, '12+'), (16, '16+'), (18, '18+')], null=True),
+            model_name="movie",
+            name="age_rating",
+            field=models.IntegerField(
+                blank=True,
+                choices=[(0, "0+"), (6, "6+"), (12, "12+"), (16, "16+"), (18, "18+")],
+                null=True,
+            ),
         ),
     ]

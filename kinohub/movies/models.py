@@ -110,22 +110,24 @@ class Director(models.Model):
         max_length=100,
         unique=True,
         verbose_name="Режисер",
-        help_text="Введіть ім'я режисера фільму"
+        help_text="Введіть ім'я режисера фільму",
     )
     slug = models.SlugField(
         unique=True, blank=True, max_length=255, verbose_name="URL-ім'я"
     )
+
     class Meta:
         verbose_name = "Режисер"
         verbose_name_plural = "Режисери"
-    
+
     def __str__(self):
         return self.name
-    
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
 
 class Movie(models.Model):
     FILM = 1
@@ -156,20 +158,28 @@ class Movie(models.Model):
     title = models.CharField(max_length=255, verbose_name="Українська назва")
     slug = models.SlugField(blank=True, max_length=255, verbose_name="URL-ім'я")
     en_title = models.CharField(max_length=255, verbose_name="Англійська назва")
-    duration = models.DurationField(blank=True, null=True, verbose_name="Тривалість фільму")
+    duration = models.DurationField(
+        blank=True, null=True, verbose_name="Тривалість фільму"
+    )
     country = CountryField()
     age_rating = models.IntegerField(blank=True, null=True, choices=AGE_CHOICES)
     description = models.TextField(blank=True, null=True, verbose_name="Опис")
     image_url = models.URLField(blank=True, null=True, verbose_name="URL зображення")
-    trailer_url = models.URLField(blank=True, null=True, verbose_name="URL-адреса трейлера")
+    trailer_url = models.URLField(
+        blank=True, null=True, verbose_name="URL-адреса трейлера"
+    )
     directors = models.ManyToManyField(
-        Director, help_text="Виберіть режисера для цього фільму", verbose_name="Режисери"
+        Director,
+        help_text="Виберіть режисера для цього фільму",
+        verbose_name="Режисери",
     )
     full_quality = models.CharField(
         max_length=50, blank=True, null=True, verbose_name="Якість"
     )
     imdb = models.FloatField(blank=True, null=True, verbose_name="IMDb")
-    imdb_votes = models.IntegerField(blank=True, null=True, verbose_name="Кількість голосів IMDB")
+    imdb_votes = models.IntegerField(
+        blank=True, null=True, verbose_name="Кількість голосів IMDB"
+    )
     release_year = models.PositiveIntegerField(
         blank=True, null=True, verbose_name="Рік випуску"
     )
