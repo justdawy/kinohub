@@ -4,8 +4,10 @@
 {% block main %}
     <div class="container-fluid">
         <div class="row">
-            <h2 class="text-white">{{ movie.title }}</h2>
-            <p class="text-muted"> {{ movie.en_title }} </p>
+            <div class="col-12">
+                <h2 class="text-white">{{ movie.title }}</h2>
+                <p class="text-muted"> {{ movie.en_title }} </p>
+            </div>
             <!-- Left column - Poster -->
             <div class="col-auto">
                 <img src="{{ movie.image_url }}"
@@ -13,7 +15,7 @@
                      class="img-fluid rounded">
             </div>
             <!-- Middle column - Info -->
-            <div class="col-12 col-sm-6 col-md-7 col-lg-8 col-xl-9">
+            <div class="col-12 col-md-6 py-2">
                 <div class="text-white">
                     <p class="text-warning">
                         <span class="text-muted">Якість:</span> <strong>{{ movie.full_quality }}</strong>
