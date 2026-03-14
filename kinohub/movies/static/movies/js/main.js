@@ -171,7 +171,7 @@ if (deleteBtn) {
     deleteBtn.addEventListener("click", () => {
         deleteAvatar = true;
 
-        document.getElementById("avatarPreview").src = "/media/images/default.png";
+        document.getElementById("avatarPreview").src = "/media/images/default-avatar.png";
 
         document.getElementById("profile_image").value = "";
     });
