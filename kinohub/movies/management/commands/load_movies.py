@@ -16,48 +16,30 @@ class Command(BaseCommand):
 
     def get_movies(self):
         app_path = Path(apps.get_app_config("movies").path)
-        ndjson_path = app_path / "static" / "movies" / "movies.ndjson"
+        json_path = app_path / "static" / "movies" / "movies.json"
 
         movies = []
-        with open(ndjson_path, encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line:
-                    movies.append(json.loads(line))
+        with open(json_path, encoding="utf-8") as f:
+            movies = json.load(f)
         if not movies:
             raise CommandError("Movies file is empty")
 
         return movies
 
     def get_or_create_movie_category(self, url):
-        raw_category = url.split("/")
-        match raw_category[3]:  # category slug
-            case "seriesss":
-                category = "Серіали"
-            case "filmy":
-                category = "Фільми"
-            case "cartoon":
-                category = "Мультфільми"
-            case "animeukr":
-                category = "Аніме"
-            case "spilno-prodakshn":
-                category = "СпільноПродакшн"
-            case _:
-                category = raw_category[3]
+        category = "undefined"
+        if "seriesss" in url:
+            category = "Серіали"
+        elif "filmy" in url:
+            category = "Фільми"
+        elif "cartoon" in url:
+            category = "Мультфільми"
+        elif "animeukr" in url:
+            category = "Аніме"
+        elif "spilno-prodakshn":
+            category = "СпільноПродакшн"
         return Category.objects.get_or_create(name=category, slug=slugify(category))[0]
-
-    def proccess_data(self, imdb, release_year):
-        imdb = imdb.replace(",", ".") if imdb else "0"
-        imdb = float(imdb) if imdb not in ("null", "n/A") else 0.0
-
-        if not release_year or release_year == "null":
-            release_year = 0
-        elif "-" in release_year:
-            release_year = int(release_year.split("-")[0])
-        else:
-            release_year = int(release_year)
-
-        return imdb, release_year
+            
 
     def get_or_create_genres(self, genre_names):
         genres = []
@@ -83,46 +65,40 @@ class Command(BaseCommand):
         movie.save()
         return movie
 
-    def proccess_players(self, movie, players):
-        for player_data in players.values():
-            title = player_data["title"]
-            player = movie.players.get_or_create(title=title)[0]
-            if len(player_data["items"]) > 1:
-                movie.movie_type = Movie.SERIES
-                movie.save()
-                for episode, url in enumerate(player_data["items"], start=1):
-                    player.items.create(url=url, episode_number=episode)
+    
 
-            elif len(player_data["items"]) == 1:
-                movie.movie_type = Movie.FILM
-                movie.save()
-                player.items.get_or_create(url=player_data["items"][0])
-
-    @transaction.atomic
     def proccess_movie(self, movie):
-        with transaction.atomic():
-            # get movie category
-            category = self.get_or_create_movie_category(movie["url"])
-            title = movie["title"]
-            description = movie["desc"]
-            image_url = movie["image_url"]
-            full_quality = movie["full_quality"]
-            imdb, release_year = self.proccess_data(movie["imdb"], movie["release"])
+        # get movie category
+        category = self.get_or_create_movie_category(movie["url"])
+        uk_title = movie["uk_title"]
+        en_title = movie["en_title"]
+        description = movie["description"]
+        image_url = movie["poster_url"]
+        full_quality = movie["quality"]
+        imdb_rating = movie.get("imdb_rating")
+        imdb_votes = movie.get("imdb_votes")
+        release_year = movie.get("year")
+        genres = []
+        if movie.get("genres"):
             genres = self.get_or_create_genres(movie["genres"])
-            actors = self.get_or_create_actors(movie["actors"])
+        actors = []
+        if movie.get("actors"):
+            actors = self.get_or_create_actors(movie.get("actors"))
 
-            new_movie = self.get_or_create_movie(
-                category=category,
-                title=title,
-                description=description,
-                image_url=image_url,
-                full_quality=full_quality,
-                imdb=imdb,
-                release_year=release_year,
-                genres=genres,
-                actors=actors,
-            )
-            self.proccess_players(new_movie, movie["players"])
+
+        new_movie = self.get_or_create_movie(
+            category=category,
+            title=uk_title,
+            en_title=en_title,
+            description=description,
+            image_url=image_url,
+            full_quality=full_quality,
+            imdb=imdb_rating,
+            imdb_votes=imdb_votes,
+            release_year=release_year,
+            genres=genres,
+            actors=actors,
+        )
 
     def handle(self, *args, **kwargs):
         # load all movies in db
