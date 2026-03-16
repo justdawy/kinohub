@@ -39,7 +39,6 @@ class Command(BaseCommand):
         elif "spilno-prodakshn":
             category = "СпільноПродакшн"
         return Category.objects.get_or_create(name=category, slug=slugify(category))[0]
-            
 
     def get_or_create_genres(self, genre_names):
         genres = []
@@ -65,8 +64,6 @@ class Command(BaseCommand):
         movie.save()
         return movie
 
-    
-
     def proccess_movie(self, movie):
         # get movie category
         category = self.get_or_create_movie_category(movie["url"])
@@ -85,8 +82,7 @@ class Command(BaseCommand):
         if movie.get("actors"):
             actors = self.get_or_create_actors(movie.get("actors"))
 
-
-        new_movie = self.get_or_create_movie(
+        self.get_or_create_movie(
             category=category,
             title=uk_title,
             en_title=en_title,
