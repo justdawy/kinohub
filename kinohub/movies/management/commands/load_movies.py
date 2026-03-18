@@ -5,10 +5,15 @@ from django.apps import apps
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from django.db.utils import IntegrityError
+from django_countries import countries
 from slugify import slugify
 from tqdm import tqdm
 
 from movies.models import Actor, Category, Genre, Movie
+
+ALIASES = {
+    "сша": "US",
+}
 
 
 class Command(BaseCommand):
@@ -46,6 +51,21 @@ class Command(BaseCommand):
             genres.append(Genre.objects.get_or_create(name=name, slug=slugify(name))[0])
         return genres
 
+    def get_or_create_countries(self, country_names):
+
+        name_to_code = {name.lower(): code for code, name in countries}
+        result = []
+
+        for name in country_names:
+            key = name.lower()
+
+            if key in ALIASES:
+                result.append(ALIASES[key])
+            elif key in name_to_code:
+                result.append(name_to_code[key])
+
+        return result
+
     def get_or_create_actors(self, actor_names):
         actors = []
         for name in actor_names:
@@ -75,6 +95,9 @@ class Command(BaseCommand):
         imdb_rating = movie.get("imdb_rating")
         imdb_votes = movie.get("imdb_votes")
         release_year = movie.get("year")
+        countries = []
+        if movie.get("country"):
+            countries = self.get_or_create_countries(movie["country"])
         genres = []
         if movie.get("genres"):
             genres = self.get_or_create_genres(movie["genres"])
@@ -94,6 +117,7 @@ class Command(BaseCommand):
             release_year=release_year,
             genres=genres,
             actors=actors,
+            country=countries,
         )
 
     def handle(self, *args, **kwargs):

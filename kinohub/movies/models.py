@@ -161,7 +161,7 @@ class Movie(models.Model):
     duration = models.DurationField(
         blank=True, null=True, verbose_name="Тривалість фільму"
     )
-    country = CountryField()
+    country = CountryField(multiple=True)
     age_rating = models.IntegerField(blank=True, null=True, choices=AGE_CHOICES)
     description = models.TextField(blank=True, null=True, verbose_name="Опис")
     image_url = models.URLField(blank=True, null=True, verbose_name="URL зображення")
