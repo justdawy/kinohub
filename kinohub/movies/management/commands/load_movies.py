@@ -9,7 +9,7 @@ from django_countries import countries
 from slugify import slugify
 from tqdm import tqdm
 
-from movies.models import Actor, Category, Genre, Movie
+from movies.models import Actor, Category, Director, Genre, Movie
 
 ALIASES = {
     "сша": "US",
@@ -77,10 +77,19 @@ class Command(BaseCommand):
                 actors.append(Actor.objects.get(slug=slugify(name)))
         return actors
 
-    def get_or_create_movie(self, genres, actors, **kwargs):
+    def get_or_create_directors(self, director_names):
+        directors = []
+        for name in director_names:
+            directors.append(
+                Director.objects.get_or_create(name=name, slug=slugify(name))[0]
+            )
+        return directors
+
+    def get_or_create_movie(self, genres, actors, directors, **kwargs):
         movie = Movie.objects.get_or_create(**kwargs)[0]
         movie.genres.set(genres)
         movie.actors.set(actors)
+        movie.directors.set(directors)
         movie.save()
         return movie
 
@@ -103,7 +112,10 @@ class Command(BaseCommand):
             genres = self.get_or_create_genres(movie["genres"])
         actors = []
         if movie.get("actors"):
-            actors = self.get_or_create_actors(movie.get("actors"))
+            actors = self.get_or_create_actors(movie["actors"])
+        directors = []
+        if movie.get("director"):
+            directors = self.get_or_create_directors(movie["director"])
 
         self.get_or_create_movie(
             category=category,
@@ -118,6 +130,7 @@ class Command(BaseCommand):
             genres=genres,
             actors=actors,
             country=countries,
+            directors=directors,
         )
 
     def handle(self, *args, **kwargs):
