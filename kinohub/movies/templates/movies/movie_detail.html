@@ -29,10 +29,12 @@
                             </a>
                         </span>
                     </p>
+                    {% if movie.age_rating %}
                     <p>
                         <span class="text-muted">Віковий рейтинг:</span>
-                        <span class="text-warning">{{ movie.age_rating }}+</span>
+                        <span class="text-warning">{{ movie.age_rating }}</span>
                     </p>
+                    {% endif %}
                     <p>
                         <span class="text-muted">Країна:</span>
                         {% for country in movie.country %}
@@ -63,10 +65,12 @@
                             {% if not forloop.last %},{% endif %}
                         {% endfor %}
                     </p>
+                    {% if movie.duration %}
                     <p class="text-warning">
                         <span class="text-muted">Тривалість:</span>
                         <strong>{{ movie.duration }}</strong>
                     </p>
+                    {% endif %}
                     {% comment %} <p class="text-warning">
                     <span class="text-muted">Озвучення:</span>
 

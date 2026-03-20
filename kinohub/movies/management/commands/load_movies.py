@@ -93,6 +93,18 @@ class Command(BaseCommand):
         movie.save()
         return movie
 
+    def normalize_age_rating(self, value):
+        if not value:
+            return None
+
+        value = str(value).strip().upper()
+
+        if value.isdigit():
+            return f"{value}+"
+
+        valid_choices = {choice[0] for choice in Movie.AGE_CHOICES}
+        return value if value in valid_choices else None
+
     def proccess_movie(self, movie):
         # get movie category
         category = self.get_or_create_movie_category(movie["url"])
@@ -104,6 +116,9 @@ class Command(BaseCommand):
         imdb_rating = movie.get("imdb_rating")
         imdb_votes = movie.get("imdb_votes")
         release_year = movie.get("year")
+        raw_age_rating = movie.get("age_rating")
+        age_rating = self.normalize_age_rating(raw_age_rating)
+        trailer_url = movie.get("trailer_url")
         countries = []
         if movie.get("country"):
             countries = self.get_or_create_countries(movie["country"])
@@ -127,6 +142,8 @@ class Command(BaseCommand):
             imdb=imdb_rating,
             imdb_votes=imdb_votes,
             release_year=release_year,
+            age_rating=age_rating,
+            trailer_url=trailer_url,
             genres=genres,
             actors=actors,
             country=countries,

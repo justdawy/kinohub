@@ -142,11 +142,24 @@ class Movie(models.Model):
     )
 
     AGE_CHOICES = [
-        (0, "0+"),
-        (6, "6+"),
-        (12, "12+"),
-        (16, "16+"),
-        (18, "18+"),
+        ("0+", "0+"),
+        ("6+", "6+"),
+        ("12+", "12+"),
+        ("16+", "16+"),
+        ("18+", "18+"),
+        # American (MPAA - movies)
+        ("G", "G (General Audiences)"),
+        ("PG", "PG (Parental Guidance Suggested)"),
+        ("PG-13", "PG-13 (Parents Strongly Cautioned)"),
+        ("R", "R (Restricted)"),
+        ("NC-17", "NC-17 (Adults Only)"),
+        # American (TV ratings)
+        ("TV-Y", "TV-Y (All Children)"),
+        ("TV-Y7", "TV-Y7 (Older Children)"),
+        ("TV-G", "TV-G (General Audience)"),
+        ("TV-PG", "TV-PG (Parental Guidance)"),
+        ("TV-14", "TV-14 (Parents Strongly Cautioned)"),
+        ("TV-MA", "TV-MA (Mature Audience)"),
     ]
 
     category = models.ForeignKey(
@@ -162,7 +175,9 @@ class Movie(models.Model):
         blank=True, null=True, verbose_name="Тривалість фільму"
     )
     country = CountryField(multiple=True)
-    age_rating = models.IntegerField(blank=True, null=True, choices=AGE_CHOICES)
+    age_rating = models.CharField(
+        max_length=10, blank=True, null=True, choices=AGE_CHOICES
+    )
     description = models.TextField(blank=True, null=True, verbose_name="Опис")
     image_url = models.URLField(blank=True, null=True, verbose_name="URL зображення")
     trailer_url = models.URLField(
