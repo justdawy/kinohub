@@ -119,6 +119,7 @@ class Command(BaseCommand):
         raw_age_rating = movie.get("age_rating")
         age_rating = self.normalize_age_rating(raw_age_rating)
         trailer_url = movie.get("trailer_url")
+        duration = movie.get("duration")
         countries = []
         if movie.get("country"):
             countries = self.get_or_create_countries(movie["country"])
@@ -144,6 +145,7 @@ class Command(BaseCommand):
             release_year=release_year,
             age_rating=age_rating,
             trailer_url=trailer_url,
+            duration=duration,
             genres=genres,
             actors=actors,
             country=countries,

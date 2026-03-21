@@ -171,8 +171,8 @@ class Movie(models.Model):
     title = models.CharField(max_length=255, verbose_name="Українська назва")
     slug = models.SlugField(blank=True, max_length=255, verbose_name="URL-ім'я")
     en_title = models.CharField(max_length=255, verbose_name="Англійська назва")
-    duration = models.DurationField(
-        blank=True, null=True, verbose_name="Тривалість фільму"
+    duration = models.CharField(
+        max_length=20, blank=True, null=True, verbose_name="Тривалість фільму"
     )
     country = CountryField(multiple=True)
     age_rating = models.CharField(
