@@ -184,12 +184,15 @@
                                     </div>
                                     <!-- Body -->
                                     <div class="modal-body">
-                                        <form id="reset-password-form">
+                                        <form id="reset-password-form"
+                                              hx-post="{% url 'account_reset_password' %}"
+                                              hx-swap="none"
+                                              hx-on::after-request="window.location.reload()">
                                             {% csrf_token %}
                                             <!-- Email -->
                                             <div class="mb-3">
                                                 <label for="email" class="form-label">Ваш Email:</label>
-                                                <input type="email" class="form-control" id="email" required>
+                                                <input type="email" name="email" class="form-control" id="email" required>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button"
