@@ -205,3 +205,11 @@ $(editProfileForm).submit((e) => {
         }
     )
 })
+
+function getGuestName(){
+    let guestName = document.querySelector("#userName")
+    if(guestName){
+        return guestName.value
+    }
+    return ""
+}
