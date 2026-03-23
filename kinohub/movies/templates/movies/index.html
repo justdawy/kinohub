@@ -11,6 +11,7 @@
             </a>
             <div class="row g-3 film-row">
                 {% for movie in category.first_movies %}
+                    {% partialdef movie-card inline%}
                     <!-- Card -->
                     <div class="col-auto">
                         <a class="text-decoration-none" href="{{ movie.get_absolute_url }}">
@@ -33,6 +34,7 @@
                             </div>
                         </a>
                     </div>
+                    {% endpartialdef movie-card %}
                 {% endfor %}
             </div>
         </div>

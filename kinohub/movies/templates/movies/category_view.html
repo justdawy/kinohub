@@ -59,28 +59,7 @@
             {% if movies %}
                 <div class="row g-3 film-row">
                     {% for movie in movies %}
-                        <!-- Card -->
-                        <div class="col-auto">
-                            <a class="text-decoration-none" href="{{ movie.get_absolute_url }}">
-                                <div class="film-card">
-                                    <div class="film-poster">
-                                        <img src="{{ movie.image_url }}" alt="">
-                                        <!-- Play button -->
-                                        <div class="play-overlay">
-                                            <i class="fa fa-play"></i>
-                                        </div>
-                                        <!-- Badge -->
-                                        <!--<span class="badge badge-top">1 сезон</span>-->
-                                        <span class="badge badge-top" style="top: 8px;">{{ movie.full_quality }}</span>
-                                        {% if movie.imdb != 0.0 %}<span class="badge badge-top" style="top: 32px;">IMDB: {{ movie.imdb }}</span>{% endif %}
-                                    </div>
-                                    <!-- Title  card-body -->
-                                    <div class="film-body">
-                                        <div class="film-title ">{{ movie.title }}</div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
+                        {% include 'movies/index.html#movie-card' %}
                     {% endfor %}
                 </div>
             </div>
