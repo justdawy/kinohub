@@ -30,10 +30,10 @@
                         </span>
                     </p>
                     {% if movie.age_rating %}
-                    <p>
-                        <span class="text-muted">Віковий рейтинг:</span>
-                        <span class="text-warning">{{ movie.age_rating }}</span>
-                    </p>
+                        <p>
+                            <span class="text-muted">Віковий рейтинг:</span>
+                            <span class="text-warning">{{ movie.age_rating }}</span>
+                        </p>
                     {% endif %}
                     <p>
                         <span class="text-muted">Країна:</span>
@@ -66,10 +66,10 @@
                         {% endfor %}
                     </p>
                     {% if movie.duration %}
-                    <p class="text-warning">
-                        <span class="text-muted">Тривалість:</span>
-                        <strong>{{ movie.duration }}</strong>
-                    </p>
+                        <p class="text-warning">
+                            <span class="text-muted">Тривалість:</span>
+                            <strong>{{ movie.duration }}</strong>
+                        </p>
                     {% endif %}
                     {% comment %} <p class="text-warning">
                     <span class="text-muted">Озвучення:</span>
@@ -176,44 +176,49 @@
                     <!-- Comment input section -->
                     <div class="mb-4 p-4 rounded"
                          style="background-color: rgba(255,255,255,0.05)">
-                        <textarea class="form-control text-white border-secondary mb-3"
-                                  id="commentTextarea"
-                                  rows="5"
-                                  placeholder="Написати відгук"></textarea>
-                        <!-- Rules (shown after focus) -->
-                        <div id="commentRules" class="mb-3" style="display: none;">
-                            <div class="p-3 rounded border border-secondary text-muted small">
-                                <p class="mb-1">1) дозволені коментарі виключно українською мовою</p>
-                                <p class="mb-1">2) заборонена нецензурна лексика, гомофобія та тема політики</p>
-                                <p class="mb-1">3) заборонені питання про вихід наступних серій/сезонів</p>
-                                {% comment %} <p class="mb-0">4) використовуйте [s]текст[/s] для спойлерів</p> {% endcomment %}
+                        <form>
+                            {% csrf_token %}
+                            <textarea class="form-control text-white border-secondary mb-3"
+                                      id="commentTextarea"
+                                      rows="5"
+                                      placeholder="Написати відгук"></textarea>
+                            <!-- Rules (shown after focus) -->
+                            <div id="commentRules" class="mb-3" style="display: none;">
+                                <div class="p-3 rounded border border-secondary text-muted small">
+                                    <p class="mb-1">1) дозволені коментарі виключно українською мовою</p>
+                                    <p class="mb-1">2) заборонена нецензурна лексика, гомофобія та тема політики</p>
+                                    <p class="mb-1">3) заборонені питання про вихід наступних серій/сезонів</p>
+                                    {% comment %} <p class="mb-0">4) використовуйте [s]текст[/s] для спойлерів</p> {% endcomment %}
+                                </div>
                             </div>
+                            {% if not user.is_authenticated %}
+                                <!-- Name input -->
+                                <div class="mb-3">
+                                    <input type="text"
+                                           class="form-control text-white border-secondary"
+                                           id="userName"
+                                           placeholder="Ваше ім'я"
+                                           style="max-width: 300px">
+                                </div>
+                            {% endif %}
+                            <!-- Submit button -->
+                            <button id="addReviewButton"
+                                    type="submit"
+                                    class="btn btn-warning"
+                                    hx-post="{% url 'review_add' %}"
+                                    hx-vals="js:{movieId: {{ movie.id }}, content: document.querySelector('#commentTextarea').value, guest_name: getGuestName()}"
+                                    hx-target=".comments-list">Додати відгук</button>
                         </div>
-                        {% if not user.is_authenticated %}
-                            <!-- Name input -->
-                            <div class="mb-3">
-                                <input type="text"
-                                       class="form-control text-white border-secondary"
-                                       id="userName"
-                                       placeholder="Ваше ім'я"
-                                       style="max-width: 300px">
-                            </div>
-                        {% endif %}
-                        <!-- Submit button -->
-                        <button id="addReviewButton"
-                                data-movie-id="{{ movie.id }}"
-                                type="submit"
-                                class="btn btn-warning">Додати відгук</button>
-                    </div>
+                    </form>
                     <script>
                         // Show rules when textarea is focused
                         document.getElementById('commentTextarea').addEventListener('focus', function () {
                             document.getElementById('commentRules').style.display = 'block';
                         });
                     </script>
-                    {% partialdef comments inline %}
-                        <!-- Comments list -->
-                        <div class="comments-list">
+                    <!-- Comments list -->
+                    <div class="comments-list">
+                        {% partialdef comments inline %}
                         {% for review in movie_reviews %}
                             <div class="comment-item mb-4 p-3 rounded"
                                  style="background-color: rgba(255,255,255,0.05)">
@@ -254,10 +259,10 @@
                                         <!-- Like/Dislike + Reply -->
                                         <div class="d-flex gap-3 align-items-center">
                                             {% comment %} <button class="btn btn-sm btn-link text-success text-decoration-none p-0">
-                                            <i class="fas fa-thumbs-up"></i> +121
-                                        </button>
-                                        <button class="btn btn-sm btn-link text-danger text-decoration-none p-0">
-                                            <i class="fas fa-thumbs-down"></i>
+                                                <i class="fas fa-thumbs-up"></i> +121
+                                            </button>
+                                            <button class="btn btn-sm btn-link text-danger text-decoration-none p-0">
+                                                <i class="fas fa-thumbs-down"></i>
                                             </button> {% endcomment %}
                                             <a href="#" class="text-warning text-decoration-none small">Відповісти</a>
                                         </div>
@@ -293,17 +298,16 @@
                                 </div>
                             </div>
                         {% endfor %}
-                    </div>
                     {% endpartialdef %}
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
 {% endblock %}
 {% block scripts %}
     <script src="{% static 'movies/js/playerjs.js' %}" type="text/javascript"></script>
-    <script src="{% static "movies/js/reviews.js" %}" type="text/javascript"></script>
 {% endblock %}
 {% block script %}
     <script>

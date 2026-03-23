@@ -8,6 +8,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.http import JsonResponse
+from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 from movies.models import Movie, Review
@@ -26,10 +27,16 @@ def create_review(request):
             else:
                 review.guest_name = request.POST.get("guest_name")
             review.save()
-            return JsonResponse({"created": True})
         except Exception:
-            return JsonResponse({"created": False})
-    return JsonResponse({"created": False})
+            pass
+    movie_reviews = Review.objects.filter(
+        movie__id=movieId, parent__isnull=True
+    ).order_by("-created_on")
+    return render(
+        request,
+        template_name="movies/movie_detail.html#comments",
+        context={"movie_reviews": movie_reviews},
+    )
 
 
 class AjaxFormMixin:

@@ -10,7 +10,6 @@ from users.views import (
 )
 
 urlpatterns = [
-    path("review/create/", create_review, name="review_add"),
     path("login/", AjaxLoginView.as_view(), name="login"),
     path("signup/", AjaxSignupView.as_view(), name="signup"),
     path(
@@ -22,3 +21,9 @@ urlpatterns = [
     path("profile/edit/", profile_edit, name="profile_edit"),
     path("", include("allauth.urls")),
 ]
+
+htmx_endpoints = [
+    path("review/create/", create_review, name="review_add"),
+]
+
+urlpatterns += htmx_endpoints
