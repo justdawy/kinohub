@@ -3,11 +3,12 @@ from pathlib import Path
 from decouple import config
 from dj_database_url import parse as dj_database_url_parser
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SITE_NAME = "Kinohub"
 
 # allauth
+ACCOUNT_ADAPTER = "users.allauth.AccountAdapter"
 ACCOUNT_LOGOUT_ON_GET = True
 LOGIN_URL = "/?login=1"
 LOGIN_REDIRECT_URL = "/"
@@ -64,7 +65,7 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
