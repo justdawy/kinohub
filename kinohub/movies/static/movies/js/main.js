@@ -43,38 +43,7 @@ function getCookie(name) {
     return cookieValue;
 }
 const csrftoken = getCookie('csrftoken');
-const loginForm = document.querySelector('#login-form')
-$(loginForm).submit((e) => {
-    e.preventDefault();
 
-    const username = loginForm.querySelector("#username").value;
-    const password = loginForm.querySelector("#password").value;
-    const form = new FormData()
-    form.set('login', username)
-    form.set('password', password)
-
-    const request = new Request(
-        "/users/login/",
-        {
-            method: "POST",
-            headers: {"X-CSRFToken": csrftoken},
-            mode: "same-origin",
-            body: form
-        },
-
-    );
-    fetch(request).then(function(response){
-        return response.json()
-    })
-    .then(function(data) {
-        if(data.loggedIn){
-            window.location.reload();
-        } else {
-            document.getElementById("login-alert").classList.remove("d-none");
-        }
-    })
-
-})
 const registerForm = document.querySelector('#register-form')
 $(registerForm).submit((e) => {
     e.preventDefault();

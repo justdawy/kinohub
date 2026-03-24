@@ -114,24 +114,19 @@
                                     </div>
                                     <!-- Body -->
                                     <div class="modal-body">
-                                        <div id="login-alert"
-                                             class="alert alert-danger alert-dismissible fade show d-none"
-                                             role="alert">
-                                            <i class="fa-solid fa-circle-xmark text-error"></i> Неправильний пароль або ім'я користувача
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                        </div>
-                                        <form id="login-form">
+                                        <div id="login-alert"></div>
+                                        <form id="login-form" hx-post="/users/login/" hx-target="#login-alert" hx-swap="innerHTML">
                                             {% csrf_token %}
                                             <!-- Username -->
                                             <div class="mb-3">
                                                 <label for="username" class="form-label">Ваш логін:</label>
-                                                <input type="text" class="form-control" id="username" required>
+                                                <input type="text" name="login" class="form-control" id="username" required>
                                             </div>
                                             <!-- Password -->
                                             <div class="mb-3">
                                                 <label for="password" class="form-label">Ваш пароль:</label>
                                                 <div class="input-group">
-                                                    <input type="password" class="form-control" id="password" required>
+                                                    <input name="password" type="password" class="form-control" id="password" required>
                                                     <button type="button"
                                                             class="input-group-text"
                                                             id="toggle-password"
