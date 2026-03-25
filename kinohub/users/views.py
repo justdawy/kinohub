@@ -1,5 +1,5 @@
 from allauth.account.models import EmailAddress
-from allauth.account.views import PasswordResetView, SignupView
+from allauth.account.views import PasswordResetView
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -37,19 +37,6 @@ def create_review(request):
         template_name="movies/movie_detail.html#comments",
         context={"movie_reviews": movie_reviews},
     )
-
-
-class AjaxFormMixin:
-    def post(self, request, *args, **kwargs):
-        form = self.get_form()
-        if form.is_valid():
-            self.form_valid(form)
-            return JsonResponse({"loggedIn": True})
-        return JsonResponse({"loggedIn": False, "errors": form.errors}, status=400)
-
-
-class AjaxSignupView(AjaxFormMixin, SignupView):
-    pass
 
 
 class AjaxPasswordResetView(PasswordResetView):
