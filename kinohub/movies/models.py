@@ -264,7 +264,7 @@ class Player(models.Model):
     movie = models.ForeignKey(
         Movie, related_name="players", on_delete=models.CASCADE, verbose_name="Фільм"
     )
-    title = models.CharField(max_length=80, verbose_name="Назва дубляжу")
+    title = models.CharField(max_length=256, verbose_name="Назва дубляжу")
 
     class Meta:
         verbose_name = "Дубляж"
