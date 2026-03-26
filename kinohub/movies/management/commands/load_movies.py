@@ -1,4 +1,5 @@
 import json
+import re
 from collections import defaultdict
 from pathlib import Path
 
@@ -10,7 +11,7 @@ from django_countries import countries
 from slugify import slugify
 from tqdm import tqdm
 
-from movies.models import Actor, Category, Director, Genre, Movie, Player
+from movies.models import Actor, Category, Director, Genre, Movie, Player, Subtitle
 
 ALIASES = {
     "сша": "US",
@@ -98,13 +99,23 @@ class Command(BaseCommand):
             if len(player["items"]) > 1:
                 movie.movie_type = movie.SERIES
                 movie.save()
-                for episode, url in enumerate(player["items"], start=1):
-                    player_.items.create(url=url, episode_number=episode)
+                for episode, item in enumerate(player["items"], start=1):
+                    items = player_.items.create(
+                        url=item["url"],
+                        poster_url=item["poster_url"],
+                        episode_number=episode,
+                    )
+                    for lang, url in item["subtitles"].items():
+                        Subtitle.objects.create(item=items, label=lang, file=url).save()
             else:
                 movie.movie_type = movie.FILM
                 movie.save()
-                for url in player["items"]:
-                    player_.items.create(url=url)
+                for item in player["items"]:
+                    items = player_.items.create(
+                        url=item["url"], poster_url=item["poster_url"]
+                    )
+                for lang, url in item["subtitles"].items():
+                    Subtitle.objects.create(item=items, label=lang, file=url).save()
 
         return movie
 
@@ -131,11 +142,26 @@ class Command(BaseCommand):
         for voice in voices:
             player = {
                 "title": voice,
-                "items": [item["stream_url"] for item in voices[voice]],
+                "items": [
+                    {
+                        "url": item["stream_url"],
+                        "poster_url": item["poster_url"],
+                        "subtitles": self.process_subtitles(item["subtitle"]),
+                    }
+                    for item in voices[voice]
+                ],
             }
             players.append(player)
 
         return players
+
+    def process_subtitles(self, subtitles):
+        print(subtitles)
+        subs = {}
+        matches = re.findall(r"\[(.*?)\](https?://[^\s,]+)", subtitles)
+        for lang, url in matches:
+            subs[lang] = url
+        return subs
 
     def proccess_movie(self, movie):
         # get movie category
@@ -167,6 +193,7 @@ class Command(BaseCommand):
         players = []
         if movie.get("streams"):
             players = self.process_streams(movie["streams"])
+
         self.get_or_create_movie(
             category=category,
             title=uk_title,

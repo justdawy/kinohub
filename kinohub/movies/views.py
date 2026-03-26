@@ -50,6 +50,10 @@ class MovieDetailView(generic.DetailView):
         if self.object.movie_type == Movie.FILM:
             for player in self.object.players.all():
                 for player_item in player.items.all():
+                    subtitles_str = ""
+                    for subtitle in player_item.subtitles.all():
+                        subtitles_str += f"[{subtitle.label}]{subtitle.file},"
+
                     if player_item.player.title == "default":
                         title = "Звичайний"
                     else:
@@ -58,16 +62,24 @@ class MovieDetailView(generic.DetailView):
                         {
                             "title": title,
                             "file": settings.PROXY_URL + player_item.url,
+                            "poster": player_item.poster_url,
+                            "subtitle": subtitles_str,
                         }
                     )
         elif self.object.movie_type == Movie.SERIES:
             for player in self.object.players.all():
                 folder = {"title": player.title, "folder": []}
                 for player_item in player.items.all():
+                    subtitles_str = ""
+                    for subtitle in player_item.subtitles.all():
+                        subtitles_str += f"[{subtitle.label}]{subtitle.file},"
+
                     folder["folder"].append(
                         {
                             "title": f"Серія {player_item.episode_number}",
                             "file": settings.PROXY_URL + player_item.url,
+                            "poster": player_item.poster_url,
+                            "subtitle": subtitles_str,
                         }
                     )
                 players_list.append(folder)
