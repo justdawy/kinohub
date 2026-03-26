@@ -279,6 +279,9 @@ class Item(models.Model):
         Player, related_name="items", on_delete=models.CASCADE, verbose_name="Плеєр"
     )
     url = models.URLField(max_length=300, verbose_name="URL")
+    poster_url = models.URLField(
+        null=True, blank=True, max_length=300, verbose_name="URL-скріншот з фільму"
+    )
     episode_number = models.PositiveIntegerField(
         blank=True, null=True, verbose_name="Номер серії"
     )
