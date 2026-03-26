@@ -1,4 +1,5 @@
 import json
+from collections import defaultdict
 from pathlib import Path
 
 from django.apps import apps
@@ -9,7 +10,7 @@ from django_countries import countries
 from slugify import slugify
 from tqdm import tqdm
 
-from movies.models import Actor, Category, Director, Genre, Movie
+from movies.models import Actor, Category, Director, Genre, Movie, Player
 
 ALIASES = {
     "сша": "US",
@@ -85,12 +86,26 @@ class Command(BaseCommand):
             )
         return directors
 
-    def get_or_create_movie(self, genres, actors, directors, **kwargs):
+    def get_or_create_movie(self, genres, actors, directors, players, **kwargs):
         movie = Movie.objects.get_or_create(**kwargs)[0]
         movie.genres.set(genres)
         movie.actors.set(actors)
         movie.directors.set(directors)
         movie.save()
+        for player in players:
+            player_ = Player(title=player["title"], movie=movie)
+            player_.save()
+            if len(player["items"]) > 1:
+                movie.movie_type = movie.SERIES
+                movie.save()
+                for episode, url in enumerate(player["items"], start=1):
+                    player_.items.create(url=url, episode_number=episode)
+            else:
+                movie.movie_type = movie.FILM
+                movie.save()
+                for url in player["items"]:
+                    player_.items.create(url=url)
+
         return movie
 
     def normalize_age_rating(self, value):
@@ -104,6 +119,23 @@ class Command(BaseCommand):
 
         valid_choices = {choice[0] for choice in Movie.AGE_CHOICES}
         return value if value in valid_choices else None
+
+    def process_streams(self, streams):
+        voices = defaultdict(list)
+        for stream in streams:
+            if stream["voice"] is not None:
+                voices[stream["voice"]].append(stream)
+            else:
+                voices["default"].append(stream)
+        players = []
+        for voice in voices:
+            player = {
+                "title": voice,
+                "items": [item["stream_url"] for item in voices[voice]],
+            }
+            players.append(player)
+
+        return players
 
     def proccess_movie(self, movie):
         # get movie category
@@ -132,7 +164,9 @@ class Command(BaseCommand):
         directors = []
         if movie.get("director"):
             directors = self.get_or_create_directors(movie["director"])
-
+        players = []
+        if movie.get("streams"):
+            players = self.process_streams(movie["streams"])
         self.get_or_create_movie(
             category=category,
             title=uk_title,
@@ -150,6 +184,7 @@ class Command(BaseCommand):
             actors=actors,
             country=countries,
             directors=directors,
+            players=players,
         )
 
     def handle(self, *args, **kwargs):
