@@ -67,61 +67,7 @@ if (deleteBtn) {
         document.getElementById("profile_image").value = "";
     });
 }
-$(editProfileForm).submit((e) => {
-    e.preventDefault()
 
-    const email = editProfileForm.querySelector("#email").value
-    const oldPassword = editProfileForm.querySelector("#old-password").value
-    const newPassword = editProfileForm.querySelector("#newPassword").value
-    const confirmNewPassword = editProfileForm.querySelector("#confirmNewPassword").value
-    const profileImageInput = editProfileForm.querySelector("#profile_image");
-
-    const form = new FormData()
-    form.set("email", email)
-    form.set("oldPassword", oldPassword)
-    form.set("newPassword", newPassword)
-    form.set("confirmNewPassword", confirmNewPassword)
-     if (profileImageInput.files.length > 0) {
-        form.append("profile_image", profileImageInput.files[0]);
-    }
-    if (deleteAvatar) {
-        form.append("deleteAvatar", "true");
-    }
-
-    fetch(
-        "/users/profile/edit/",
-        {
-            method: "POST",
-            headers: {"X-CSRFToken": csrftoken},
-            mode: "same-origin",
-            body: form
-        }
-    ).then(response => response.json()).then(
-        data => {
-            if(data.success){
-                window.location.reload()
-            }
-            else {
-                const alertBox = document.querySelector("#edit-alert");
-        const errorList = alertBox.querySelector(".error-list");
-
-        errorList.innerHTML = ""; // clear previous errors
-
-        if (data.errors) {
-            for (const field in data.errors) {
-                data.errors[field].forEach(error => {
-                    const li = document.createElement("li");
-                    li.textContent = error;
-                    errorList.appendChild(li);
-                });
-            }
-
-            alertBox.classList.remove("d-none");
-        }
-            }
-        }
-    )
-})
 
 function getGuestName(){
     let guestName = document.querySelector("#userName")
