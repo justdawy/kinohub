@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
@@ -69,15 +69,6 @@ def profile_edit(request):
     old_password = request.POST.get("oldPassword", "")
     new_password = request.POST.get("newPassword", "")
     confirm_new_password = request.POST.get("confirmNewPassword", "")
-    if request.FILES.get("profile_image"):
-        if (
-            user.profile_image
-            and user.profile_image.name != "images/default-avatar.png"
-        ):
-            user.profile_image.delete(save=False)
-
-        user.profile_image = request.FILES["profile_image"]
-        user.save()
     if request.POST.get("deleteAvatar") == "true":
         if (
             user.profile_image
@@ -87,6 +78,16 @@ def profile_edit(request):
 
         user.profile_image = user._meta.get_field("profile_image").get_default()
         user.save()
+    if request.FILES.get("profile_image"):
+        if (
+            user.profile_image
+            and user.profile_image.name != "images/default-avatar.png"
+        ):
+            user.profile_image.delete(save=False)
+
+        user.profile_image = request.FILES["profile_image"]
+        user.save()
+
     if email and email != user.email:
         try:
             validate_email(email)
@@ -141,8 +142,10 @@ def profile_edit(request):
             update_session_auth_hash(request, user)
 
     if errors:
-        return JsonResponse({"success": False, "errors": errors})
+        return render(request, "users/profile.html#errors", {"errors": errors})
 
     messages.add_message(request, messages.SUCCESS, "Профіль успішно оновлено")
 
-    return JsonResponse({"success": True})
+    response = HttpResponse()
+    response["HX-Redirect"] = "/users/profile/"
+    return response
