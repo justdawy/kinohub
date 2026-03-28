@@ -1,0 +1,14 @@
+{% extends "movies/base.html" %}
+
+{% block main %}
+  <h2 class="text-white">Підтвердіть адресу електронної пошти</h2>
+
+  <p class="text-muted">
+    Будь ласка, підтвердіть, що {{ email }} є адресою електронної пошти для користувача {{ user }}.
+  </p>
+
+  <form method="post" action="">
+    {% csrf_token %}
+    <button  class="btn btn-warning" type="submit">Підтвердити</button>
+  </form>
+{% endblock %}
