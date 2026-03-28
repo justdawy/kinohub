@@ -156,7 +156,6 @@ class Command(BaseCommand):
         return players
 
     def process_subtitles(self, subtitles):
-        print(subtitles)
         subs = {}
         matches = re.findall(r"\[(.*?)\](https?://[^\s,]+)", subtitles)
         for lang, url in matches:
