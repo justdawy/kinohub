@@ -180,3 +180,7 @@ class ActorDetailView(generic.DetailView):
         page = self.request.GET.get("page")
         movies = paginator.get_page(page)
         return movies
+
+
+class AbuseTemplateView(generic.TemplateView):
+    template_name = "movies/right_holders.html"

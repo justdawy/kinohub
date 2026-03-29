@@ -5,6 +5,7 @@ from movies import views
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="movies/index.html"), name="index"),
+    path("abuse/", views.AbuseTemplateView.as_view(), name="abuse"),
     path("search/", views.SearchListView.as_view(), name="search"),
     path(
         "<slug:category_slug>/",
