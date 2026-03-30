@@ -18,7 +18,11 @@
               referrerpolicy="no-referrer" />
         <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
         <link rel="stylesheet" href="{% static 'movies/css/style.css' %}">
-        <style>body {background-image: url("{% static 'movies/img/background.jpg' %}");}</style>
+        <style>
+        body {
+            background-image: url("{% static 'movies/img/background.jpg' %}");
+        }
+        </style>
         {% block head %}{% endblock %}
     </head>
     <body class="d-flex flex-column h-100">
@@ -323,7 +327,7 @@
         <footer class="footer text-lg-start text-light">
             <div class="text-center">
                 <span class="text-white">© 2026, kinohub.com — твої улюблені серіали українською мовою онлайн</span>
-                <a class="link-warning text-decoration-none" href="#">Правовласникам</a>
+                <a class="link-warning text-decoration-none" href="{% url 'abuse' %}">Правовласникам</a>
                 <a class="link-warning text-decoration-none" href="#">Зворотній зв′язок</a>
             </div>
         </footer>
