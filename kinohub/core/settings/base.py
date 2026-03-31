@@ -7,6 +7,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SITE_NAME = "Kinohub"
 
+REVIEW_PAGE_SIZE = 5
+
 # allauth
 ACCOUNT_ADAPTER = "users.allauth.AccountAdapter"
 ACCOUNT_LOGOUT_ON_GET = True

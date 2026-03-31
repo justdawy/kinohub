@@ -171,7 +171,7 @@
                 <div class="col-12">
                     <!-- Comment header -->
                     <h5 class="mb-4 text-warning">
-                        <i class="fas fa-comment text-warning"></i> Відгуки ({{ movie_reviews.count }})
+                        <i class="fas fa-comment text-warning"></i> Відгуки ({{ reviews_count }})
                     </h5>
                     <!-- Comment input section -->
                     <div class="mb-4 p-4 rounded"
@@ -221,7 +221,8 @@
                         {% partialdef comments inline %}
                         {% for review in movie_reviews %}
                             <div class="comment-item mb-4 p-3 rounded"
-                                 style="background-color: rgba(255,255,255,0.05)">
+                                 style="background-color: rgba(255,255,255,0.05)"
+                                 {% if forloop.last and movie_reviews.has_next %} hx-get="{% url 'get_reviews' review.movie.id %}?page={{ movie_reviews.next_page_number }}" hx-trigger="revealed" hx-swap="afterend" hx-indicator="#spinner" {% endif %}>
                                 <div class="d-flex gap-3">
                                     <!-- Avatar -->
                                     <div class="flex-shrink-0">
@@ -299,6 +300,14 @@
                             </div>
                         {% endfor %}
                     {% endpartialdef %}
+                    <!-- reviews' spinner -->
+                    <div class="text-center">
+                        <div id="spinner"
+                             class="spinner-border text-warning htmx-indicator"
+                             role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
