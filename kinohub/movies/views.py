@@ -1,9 +1,22 @@
 from django.conf import settings
 from django.core.paginator import Paginator
+from django.shortcuts import render
 from django.views import generic
 
 from movies.forms import SearchForm
 from movies.models import Actor, Category, Movie
+
+
+def get_reviews(request, movie_id):
+    page = request.GET.get("page", 1)
+    movie_reviews = (
+        Movie.objects.get(pk=movie_id)
+        .reviews.filter(parent__isnull=True)
+        .order_by("-created_on")
+    )
+    paginator = Paginator(movie_reviews, settings.REVIEW_PAGE_SIZE)
+    context = {"movie_reviews": paginator.page(page)}
+    return render(request, "movies/movie_detail.html#comments", context=context)
 
 
 class SearchListView(generic.ListView):
@@ -88,6 +101,9 @@ class MovieDetailView(generic.DetailView):
         movie_reviews = self.object.reviews.filter(parent__isnull=True).order_by(
             "-created_on"
         )
+        context["reviews_count"] = movie_reviews.count
+        movie_paginator = Paginator(movie_reviews, settings.REVIEW_PAGE_SIZE)
+        movie_reviews = movie_paginator.page(1)  # default 1 when this view is triggered
         context["movie_reviews"] = movie_reviews
         return context
 
