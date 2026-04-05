@@ -9,6 +9,7 @@ from .models import (
     Movie,
     Player,
     Review,
+    Screenshot,
     Subtitle,
 )
 
@@ -81,3 +82,8 @@ class ActorAdmin(admin.ModelAdmin):
 @admin.register(Director)
 class DirectorAdmin(admin.ModelAdmin):
     search_fields = ["name"]
+
+
+@admin.register(Screenshot)
+class ScreenshotAdmin(admin.ModelAdmin):
+    search_fields = ["movie__title"]
