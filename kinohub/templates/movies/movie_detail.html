@@ -1,5 +1,8 @@
 {% extends "movies/base.html" %}
 {% load static %}
+{% block head %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.css" />
+{% endblock head %}
 {% block title %}{{ movie.title }} ({{ movie.release_year }}) дивитися онлайн українською в HD якості{% endblock %}
 {% block main %}
     <div class="container-fluid">
@@ -9,11 +12,11 @@
                 <p class="text-muted">{{ movie.en_title }}</p>
             </div>
             <!-- Left column - Poster -->
-            <div class="col-auto">
-                <img src="{{ movie.image_url }}"
-                     alt="{{ movie.title }}"
-                     class="img-fluid rounded"
-                     width="300">
+            <div class="col-auto" style="position: relative;">
+                <a href="{{ movie.image_url }}" loading="lazy" data-fancybox="gallery" data-caption="постер до фільму {{ movie.title }} дивитися онлайн">
+                    <i class="full-zoom fa fa-expand"></i>
+                    <img width="300" class="img-fluid rounded" src="{{ movie.image_url }}" loading="lazy" alt="постер до фільму {{ movie.title }} дивитися онлайн" title="постер до фільму {{ movie.title }} дивитися онлайн">
+                </a>
             </div>
             <!-- Middle column - Info -->
             <div class="col-12 col-md-6 py-2">
@@ -100,6 +103,18 @@
                 </small>
             </div>
             <p class="text-muted">{{ movie.description }}</p>
+        </div>
+    </div>
+    <div class="screen-section">
+        <div class="row g-3 justify-content-center">
+            {% for shot in movie.screenshots.all %}
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2 flex-grow-1">
+                <a href="{{ shot.screenshot_url }}" data-fancybox="gallery" data-caption="кадри з фільму {{ movie.title }}">
+                    <img src="{{ shot.screenshot_url }}" class="img-fluid rounded screenshot"
+                        alt="кадри з фільму {{ movie.title }}" title="кадри з фільму {{ movie.title }}">
+                </a>
+            </div>
+            {% endfor %}
         </div>
     </div>
     <!-- player -->
@@ -338,12 +353,16 @@
 {% endblock %}
 {% block scripts %}
     <script src="{% static 'movies/js/playerjs.js' %}" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.umd.js"></script>
 {% endblock %}
 {% block script %}
     <script>
     let player = new Playerjs({
         id: "player",
         file: {{ players_list| safe }}
+    });
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        // Your custom options for a specific gallery
     });
     const trailerBtn = document.querySelector("#trailerBtn")
     const playerBtn = document.querySelector("#playerBtn")
