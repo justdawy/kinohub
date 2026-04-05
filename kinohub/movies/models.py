@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
 from django.utils.timezone import now
 from django_countries.fields import CountryField
@@ -253,6 +254,13 @@ class Review(models.Model):
     class Meta:
         verbose_name = "Відгук"
         verbose_name_plural = "Відгуки"
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "movie"],
+                condition=Q(parent__isnull=True),
+                name="unique_user_movie_review",
+            )
+        ]
 
     def __str__(self):
         if self.user:

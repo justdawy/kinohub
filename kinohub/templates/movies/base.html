@@ -16,7 +16,8 @@
               integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
               crossorigin="anonymous"
               referrerpolicy="no-referrer" />
-        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/htmx-ext-response-targets@2.0.4" integrity="sha384-T41oglUPvXLGBVyRdZsVRxNWnOOqCynaPubjUVjxhsjFTKrFJGEMm3/0KGmNQ+Pg" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="{% static 'movies/css/style.css' %}">
         <style>
         body {
@@ -25,7 +26,7 @@
         </style>
         {% block head %}{% endblock %}
     </head>
-    <body class="d-flex flex-column h-100">
+    <body class="d-flex flex-column h-100" hx-ext="response-targets">
         <!-- header -->
         <header class="p-3 mb-3 border-bottom container my-4">
             <div class="container">

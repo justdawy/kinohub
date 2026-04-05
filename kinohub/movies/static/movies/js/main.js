@@ -48,7 +48,7 @@ const csrftoken = getCookie('csrftoken');
 document.addEventListener("DOMContentLoaded", function () {
     const params = new URLSearchParams(window.location.search);
 
-    if(params.get("login") === "1"){
+    if (params.get("login") === "1") {
         var loginModal = new bootstrap.Modal(document.getElementById("loginModal"))
         loginModal.show()
     }
@@ -69,10 +69,21 @@ if (deleteBtn) {
 }
 
 
-function getGuestName(){
+function getGuestName() {
     let guestName = document.querySelector("#userName")
-    if(guestName){
+    if (guestName) {
         return guestName.value
     }
     return ""
 }
+document.body.addEventListener("htmx:afterRequest", function (event) {
+    const form = document.querySelector("form#reviewForm");
+    if (!form) return;
+
+    if (form.contains(event.detail.elt) && event.detail.successful) {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+});

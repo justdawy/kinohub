@@ -7,8 +7,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView
 from movies.models import Movie, Review
@@ -17,26 +18,48 @@ from movies.models import Movie, Review
 @require_POST
 def create_review(request):
     movieId = request.POST.get("movieId")
-    content = request.POST.get("content")
-    if movieId and content:
-        try:
-            movie = Movie.objects.get(id=movieId)
-            review = Review(movie=movie, content=content)
-            if request.user.is_authenticated:
-                review.user = request.user
-            else:
-                review.guest_name = request.POST.get("guest_name")
-            review.save()
-        except Exception:
-            pass
-    movie_reviews = Review.objects.filter(
-        movie__id=movieId, parent__isnull=True
-    ).order_by("-created_on")
-    return render(
-        request,
-        template_name="movies/movie_detail.html#comments",
-        context={"movie_reviews": movie_reviews},
-    )
+    content = request.POST.get("content", "").strip()
+
+    if not movieId or len(content) < 50:
+        html = render_to_string(
+            "movies/movie_detail.html#errors",
+            {
+                "errors": {
+                    "content": ["Текст відгукa повинен містити не менше 50 символів"]
+                }
+            },
+        )
+        return HttpResponseBadRequest(html)
+
+    try:
+        movie = Movie.objects.get(id=movieId)
+    except Movie.DoesNotExist:
+        return HttpResponseBadRequest("Movie not found")
+
+    if request.user.is_authenticated:
+        if Review.objects.filter(
+            user=request.user, movie=movie, parent__isnull=True
+        ).exists():
+            html = render_to_string(
+                "movies/movie_detail.html#errors",
+                {"errors": {"review": ["Ви вже залишили відгук до цього фільму"]}},
+            )
+            return HttpResponseBadRequest(html)
+
+    review = Review(movie=movie, content=content)
+
+    if request.user.is_authenticated:
+        review.user = request.user
+    else:
+        review.guest_name = request.POST.get("guest_name", "Невідомий")
+
+    review.save()
+
+    messages.success(request, "Відгук успішно додано!")
+
+    response = HttpResponse()
+    response["HX-Redirect"] = request.META.get("HTTP_REFERER", "/")
+    return response
 
 
 class AjaxPasswordResetView(PasswordResetView):
