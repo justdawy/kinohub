@@ -182,22 +182,10 @@
                               hx-vals="js:{movieId: {{ movie.id }}, content: document.querySelector('#commentTextarea').value, guest_name: getGuestName()}"
                               hx-target="#comments-section"
                               hx-target-error="#errors"
-                              hx-swap="outerHTML">
+                              hx-swap="innerHTML">
                             <script>
-document.body.addEventListener("htmx:afterRequest", function (event) {
-    // Check if this request came from your review form
-    const form = document.querySelector("form#reviewForm"); // give your form an ID
-    if (!form) return;
 
-    if (form.contains(event.detail.elt) && event.detail.successful) {
-        // Only scroll if this form triggered the request
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    }
-});
-</script>
+        </script>
                             <div id="errors">
                                 {% partialdef errors %}
                                 <div id="error-list"

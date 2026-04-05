@@ -18,19 +18,9 @@ from movies.models import Movie, Review
 @require_POST
 def create_review(request):
     movieId = request.POST.get("movieId")
-    content = request.POST.get("content")
-    if movieId and len(content.strip()) >= 50:
-        try:
-            movie = Movie.objects.get(id=movieId)
-            review = Review(movie=movie, content=content)
-            if request.user.is_authenticated:
-                review.user = request.user
-            else:
-                review.guest_name = request.POST.get("guest_name")
-            review.save()
-        except Exception:
-            pass
-    else:
+    content = request.POST.get("content", "").strip()
+
+    if not movieId or len(content) < 50:
         html = render_to_string(
             "movies/movie_detail.html#errors",
             {
@@ -41,7 +31,32 @@ def create_review(request):
         )
         return HttpResponseBadRequest(html)
 
-    messages.add_message(request, messages.SUCCESS, "Відгук успішно додано!")
+    try:
+        movie = Movie.objects.get(id=movieId)
+    except Movie.DoesNotExist:
+        return HttpResponseBadRequest("Movie not found")
+
+    if request.user.is_authenticated:
+        if Review.objects.filter(
+            user=request.user, movie=movie, parent__isnull=True
+        ).exists():
+            html = render_to_string(
+                "movies/movie_detail.html#errors",
+                {"errors": {"review": ["Ви вже залишили відгук до цього фільму"]}},
+            )
+            return HttpResponseBadRequest(html)
+
+    review = Review(movie=movie, content=content)
+
+    if request.user.is_authenticated:
+        review.user = request.user
+    else:
+        review.guest_name = request.POST.get("guest_name", "Невідомий")
+
+    review.save()
+
+    messages.success(request, "Відгук успішно додано!")
+
     response = HttpResponse()
     response["HX-Redirect"] = request.META.get("HTTP_REFERER", "/")
     return response
