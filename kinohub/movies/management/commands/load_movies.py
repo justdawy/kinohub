@@ -11,7 +11,16 @@ from django_countries import countries
 from slugify import slugify
 from tqdm import tqdm
 
-from movies.models import Actor, Category, Director, Genre, Movie, Player, Subtitle
+from movies.models import (
+    Actor,
+    Category,
+    Director,
+    Genre,
+    Movie,
+    Player,
+    Screenshot,
+    Subtitle,
+)
 
 ALIASES = {
     "сша": "US",
@@ -87,11 +96,15 @@ class Command(BaseCommand):
             )
         return directors
 
-    def get_or_create_movie(self, genres, actors, directors, players, **kwargs):
+    def get_or_create_movie(
+        self, genres, actors, directors, players, screenshots, **kwargs
+    ):
         movie = Movie.objects.get_or_create(**kwargs)[0]
         movie.genres.set(genres)
         movie.actors.set(actors)
         movie.directors.set(directors)
+        for url in screenshots:
+            Screenshot.objects.create(movie=movie, screenshot_url=url)
         movie.save()
         for player in players:
             player_ = Player(title=player["title"], movie=movie)
@@ -193,6 +206,8 @@ class Command(BaseCommand):
         if movie.get("streams"):
             players = self.process_streams(movie["streams"])
 
+        screenshots = movie.get("screenshots", [])
+
         self.get_or_create_movie(
             category=category,
             title=uk_title,
@@ -211,6 +226,7 @@ class Command(BaseCommand):
             country=countries,
             directors=directors,
             players=players,
+            screenshots=screenshots,
         )
 
     def handle(self, *args, **kwargs):

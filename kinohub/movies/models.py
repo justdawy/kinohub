@@ -231,6 +231,16 @@ class Movie(models.Model):
         super().save(*args, **kwargs)
 
 
+class Screenshot(models.Model):
+    movie = models.ForeignKey(
+        Movie, related_name="screenshots", on_delete=models.CASCADE
+    )
+    screenshot_url = models.URLField(verbose_name="URL Ha Кадр із фільму")
+
+    def __str__(self):
+        return f"Кадр із фільму {self.movie.title}"
+
+
 class Review(models.Model):
     movie = models.ForeignKey(Movie, related_name="reviews", on_delete=models.CASCADE)
     user = models.ForeignKey(
