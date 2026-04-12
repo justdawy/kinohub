@@ -250,3 +250,10 @@ a.category-title {
   transform: scale(1.05); /* subtle zoom on hover */
   border: 2px solid goldenrod;
 }
+
+.like-icon {
+  transition: transform 0.3s ease;
+}
+.like-icon:hover{
+  transform: scale(1.2);
+}

@@ -6,6 +6,7 @@ from .models import (
     Director,
     Genre,
     Item,
+    Like,
     Movie,
     Player,
     Review,
@@ -87,3 +88,8 @@ class DirectorAdmin(admin.ModelAdmin):
 @admin.register(Screenshot)
 class ScreenshotAdmin(admin.ModelAdmin):
     search_fields = ["movie__title"]
+
+
+@admin.register(Like)
+class LikeAdmin(admin.ModelAdmin):
+    pass

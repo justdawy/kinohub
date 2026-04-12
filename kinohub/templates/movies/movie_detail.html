@@ -1,7 +1,8 @@
 {% extends "movies/base.html" %}
 {% load static %}
 {% block head %}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.css" />
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.css" />
 {% endblock head %}
 {% block title %}{{ movie.title }} ({{ movie.release_year }}) дивитися онлайн українською в HD якості{% endblock %}
 {% block main %}
@@ -13,9 +14,17 @@
             </div>
             <!-- Left column - Poster -->
             <div class="col-auto" style="position: relative;">
-                <a href="{{ movie.image_url }}" loading="lazy" data-fancybox="gallery" data-caption="постер до фільму {{ movie.title }} дивитися онлайн">
+                <a href="{{ movie.image_url }}"
+                   loading="lazy"
+                   data-fancybox="gallery"
+                   data-caption="постер до фільму {{ movie.title }} дивитися онлайн">
                     <i class="full-zoom fa fa-expand"></i>
-                    <img width="300" class="img-fluid rounded" src="{{ movie.image_url }}" loading="lazy" alt="постер до фільму {{ movie.title }} дивитися онлайн" title="постер до фільму {{ movie.title }} дивитися онлайн">
+                    <img width="300"
+                         class="img-fluid rounded"
+                         src="{{ movie.image_url }}"
+                         loading="lazy"
+                         alt="постер до фільму {{ movie.title }} дивитися онлайн"
+                         title="постер до фільму {{ movie.title }} дивитися онлайн">
                 </a>
             </div>
             <!-- Middle column - Info -->
@@ -108,12 +117,16 @@
     <div class="screen-section">
         <div class="row g-3 justify-content-center">
             {% for shot in movie.screenshots.all %}
-            <div class="col-6 col-sm-4 col-md-3 col-lg-2 flex-grow-1">
-                <a href="{{ shot.screenshot_url }}" data-fancybox="gallery" data-caption="кадри з фільму {{ movie.title }}">
-                    <img src="{{ shot.screenshot_url }}" class="img-fluid rounded screenshot"
-                        alt="кадри з фільму {{ movie.title }}" title="кадри з фільму {{ movie.title }}">
-                </a>
-            </div>
+                <div class="col-6 col-sm-4 col-md-3 col-lg-2 flex-grow-1">
+                    <a href="{{ shot.screenshot_url }}"
+                       data-fancybox="gallery"
+                       data-caption="кадри з фільму {{ movie.title }}">
+                        <img src="{{ shot.screenshot_url }}"
+                             class="img-fluid rounded screenshot"
+                             alt="кадри з фільму {{ movie.title }}"
+                             title="кадри з фільму {{ movie.title }}">
+                    </a>
+                </div>
             {% endfor %}
         </div>
     </div>
@@ -198,9 +211,7 @@
                               hx-target="#comments-section"
                               hx-target-error="#errors"
                               hx-swap="innerHTML">
-                            <script>
-
-        </script>
+                            <script></script>
                             <div id="errors">
                                 {% partialdef errors %}
                                 <div id="error-list"
@@ -255,6 +266,7 @@
                 <div class="comments-list">
                     {% partialdef comments inline %}
                     {% for review in movie_reviews %}
+                        {% partialdef comment inline %}
                         <div class="comment-item mb-4 p-3 rounded"
                              style="background-color: rgba(255,255,255,0.05)"
                              {% if forloop.last and movie_reviews.has_next %} hx-get="{% url 'get_reviews' review.movie.id %}?page={{ movie_reviews.next_page_number }}" hx-trigger="revealed" hx-swap="afterend" hx-indicator="#spinner" {% endif %}>
@@ -293,59 +305,76 @@
                                     </div>
                                     <p class="mb-3">{{ review.content }}</p>
                                     <!-- Like/Dislike + Reply -->
-                                    <div class="d-flex gap-3 align-items-center">
-                                        {% comment %} <button class="btn btn-sm btn-link text-success text-decoration-none p-0">
-                                                <i class="fas fa-thumbs-up"></i> +121
-                                            </button>
-                                            <button class="btn btn-sm btn-link text-danger text-decoration-none p-0">
-                                                <i class="fas fa-thumbs-down"></i>
-                                        </button> {% endcomment %}
+                                    {% partialdef review_like_section inline %}
+                                    <div id="review-{{ review.id }}-votes"
+                                         class="d-flex gap-3 align-items-center">
+                                        <button class="btn btn-sm btn-link text-success text-decoration-none p-0"
+                                                hx-post="{% url 'review_vote' review.id %}"
+                                                hx-vals='{"vote_type": "like"}'
+                                                hx-target="#review-{{ review.id }}-votes"
+                                                hx-swap="outerHTML">
+                                            <i class="like-icon fas fa-thumbs-up"></i> +{{ review.likes_count }}
+                                        </button>
+                                        <button class="btn btn-sm btn-link text-danger text-decoration-none p-0"
+                                                hx-post="{% url 'review_vote' review.id %}"
+                                                hx-vals='{"vote_type": "dislike"}'
+                                                hx-target="#review-{{ review.id }}-votes"
+                                                hx-swap="outerHTML">
+                                            <i class="like-icon fas fa-thumbs-down"></i> -{{ review.dislikes_count }}
+                                        </button>
                                         <a href="#" class="text-warning text-decoration-none small">Відповісти</a>
                                     </div>
-                                    {% for reply in review.replies.all %}
-                                        <!-- REPLY - indented -->
-                                        <div class="comment-reply ms-4 mt-3 p-3 rounded"
-                                             style="background-color: rgba(255,255,255,0.05);
-                                                    border-left: 3px solid #ffc107">
-                                            <div class="d-flex gap-3">
-                                                <!-- Avatar -->
-                                                <div class="flex-shrink-0">
-                                                    <img src="{{ reply.user.profile_image.url }}"
-                                                         alt="{{ reply.user.username }}"
-                                                         class="rounded-circle"
-                                                         style="width: 40px;
-                                                                height: 40px;
-                                                                object-fit: cover">
-                                                </div>
-                                                <!-- Reply content -->
-                                                <div class="flex-grow-1">
-                                                    <div class="d-flex justify-content-between align-items-start mb-2">
-                                                        <div>
-                                                            <strong>{{ reply.user.username }}</strong>
-                                                        </div>
-                                                        <small class="text-muted">{{ reply.created_on }}</small>
+                                {% endpartialdef %}
+                                {% for reply in review.replies.all %}
+                                    <!-- REPLY - indented -->
+                                    <div class="comment-reply ms-4 mt-3 p-3 rounded"
+                                         style="background-color: rgba(255,255,255,0.05);
+                                                border-left: 3px solid #ffc107">
+                                        <div class="d-flex gap-3">
+                                            <!-- Avatar -->
+                                            <div class="flex-shrink-0">
+                                                <img src="{{ reply.user.profile_image.url }}"
+                                                     alt="{{ reply.user.username }}"
+                                                     class="rounded-circle"
+                                                     style="width: 40px;
+                                                            height: 40px;
+                                                            object-fit: cover">
+                                            </div>
+                                            <!-- Reply content -->
+                                            <div class="flex-grow-1">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <div>
+                                                        <strong>{{ reply.user.username }}</strong>
                                                     </div>
-                                                    <p class="mb-3">{{ reply.content }}</p>
+                                                    <small class="text-muted">{{ reply.created_on }}</small>
                                                 </div>
+                                                <p class="mb-3">{{ reply.content }}</p>
                                             </div>
                                         </div>
-                                    {% endfor %}
-                                </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
-                    {% endfor %}
-                {% endpartialdef %}
-                <!-- reviews' spinner -->
-                <div class="text-center">
-                    <div id="spinner"
-                         class="spinner-border text-warning htmx-indicator"
-                         role="status">
-                        <span class="visually-hidden">Loading...</span>
                     </div>
-                </div>
+                {% endpartialdef %}
+            {% endfor %}
+        {% endpartialdef %}
+        <script>
+  document.body.addEventListener('htmx:configRequest', function(event) {
+    event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+  });
+        </script>
+        <!-- reviews' spinner -->
+        <div class="text-center">
+            <div id="spinner"
+                 class="spinner-border text-warning htmx-indicator"
+                 role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
         </div>
     </div>
+</div>
+</div>
 </div>
 {% endpartialdef %}
 </div>
