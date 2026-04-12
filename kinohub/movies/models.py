@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
@@ -277,6 +279,20 @@ class Review(models.Model):
             return f"Відгук від {self.user.username} до {self.movie.title}"
         return f"Відгук від {self.guest_name or 'Guest'} до {self.movie.title}"
 
+    @property
+    def likes_count(self):
+        content_type = ContentType.objects.get_for_model(self)
+        return Like.objects.filter(
+            content_type=content_type, object_id=self.pk, value=Like.LIKE
+        ).count()
+
+    @property
+    def dislikes_count(self):
+        content_type = ContentType.objects.get_for_model(self)
+        return Like.objects.filter(
+            content_type=content_type, object_id=self.pk, value=Like.DISLIKE
+        ).count()
+
 
 class Player(models.Model):
     movie = models.ForeignKey(
@@ -337,3 +353,26 @@ class Subtitle(models.Model):
         return (
             f"{self.label} - {self.item.player.title} ({self.item.player.movie.title})"
         )
+
+
+class Like(models.Model):
+    LIKE = 1
+    DISLIKE = -1
+    LIKE_CHOICES = [(LIKE, "Like"), (DISLIKE, "Dislike")]
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="user_likes"
+    )
+    content_type = models.ForeignKey(
+        ContentType, on_delete=models.CASCADE, related_name="content_type"
+    )
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey("content_type", "object_id")
+    value = models.SmallIntegerField(choices=LIKE_CHOICES)
+
+    class Meta:
+        unique_together = ["user", "content_type", "object_id"]
+
+    def __str__(self):
+        action = "liked" if self.value == self.LIKE else "disliked"
+        return f"{self.user.username} {action} {self.content_object.pk}"
