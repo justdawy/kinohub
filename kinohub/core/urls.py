@@ -6,6 +6,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("movies.urls")),
     path("users/", include("users.urls")),
+    path("reviews/", include("reviews.urls")),
 ]
 if settings.DEBUG:
     from django.conf.urls.static import static
