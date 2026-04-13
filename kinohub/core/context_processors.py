@@ -1,8 +1,7 @@
 from django.conf import settings
 from django.core.cache import cache
 from django.db.models import Prefetch
-
-from .models import Category, Movie
+from movies.models import Category, Movie
 
 
 def global_vars(request):
