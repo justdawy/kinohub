@@ -67,7 +67,7 @@
                                                                     height: 180px;
                                                                     object-fit: cover">
                                                     <div class="mb-2">
-                                                        <input type="file" class="form-control"
+                                                        <input id="profile_image" type="file" class="form-control"
                                                             name="profile_image" accept="image/*">
                                                     </div>
                                                     {% if user.profile_image.name != "images/default-avatar.png" %}
@@ -76,12 +76,7 @@
                                                     {% endif %}
                                                 </div>
                                                 <script>
-                                                    document.getElementById("profile_image").addEventListener("change", function (event) {
-                                                        const [file] = event.target.files;
-                                                        if (file) {
-                                                            document.getElementById("avatarPreview").src = URL.createObjectURL(file);
-                                                        }
-                                                    });
+
                                                 </script>
                                                 <!-- Email -->
                                                 <div class="mb-3">
@@ -151,4 +146,7 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block scripts %}
+    <script src="{% static 'users/js/profile.js' %}"></script>
 {% endblock %}
