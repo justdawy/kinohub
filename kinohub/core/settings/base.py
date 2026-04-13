@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django_countries",
     "movies.apps.MoviesConfig",
     "users.apps.UsersConfig",
+    "reviews.apps.ReviewsConfig",
 ]
 
 MIDDLEWARE = [

@@ -1,4 +1,5 @@
 from django.contrib import admin
+from reviews.models import Like, Review
 
 from .models import (
     Actor,
@@ -6,10 +7,8 @@ from .models import (
     Director,
     Genre,
     Item,
-    Like,
     Movie,
     Player,
-    Review,
     Screenshot,
     Subtitle,
 )
