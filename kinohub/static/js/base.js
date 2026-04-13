@@ -1,4 +1,3 @@
-
 // password vision toggle
 const passwordInputs = document.querySelectorAll('#password');
 const eyeButtons = document.querySelectorAll('#toggle-password');
@@ -53,37 +52,3 @@ document.addEventListener("DOMContentLoaded", function () {
         loginModal.show()
     }
 })
-const editProfileForm = document.querySelector("#edit-profile-form")
-let deleteAvatar = false;
-
-const deleteBtn = document.querySelector("#deleteAvatarBtn");
-
-if (deleteBtn) {
-    deleteBtn.addEventListener("click", () => {
-        deleteAvatar = true;
-
-        document.getElementById("avatarPreview").src = "/media/images/default-avatar.png";
-
-        document.getElementById("profile_image").value = "";
-    });
-}
-
-
-function getGuestName() {
-    let guestName = document.querySelector("#userName")
-    if (guestName) {
-        return guestName.value
-    }
-    return ""
-}
-document.body.addEventListener("htmx:afterRequest", function (event) {
-    const form = document.querySelector("form#reviewForm");
-    if (!form) return;
-
-    if (form.contains(event.detail.elt) && event.detail.successful) {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    }
-});

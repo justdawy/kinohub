@@ -7,7 +7,7 @@
         <title>
             {% block title %}{% endblock %}
         </title>
-        <link rel="icon" type="image/x-icon" href="{% static 'movies/img/logo.png' %}">
+        <link rel="icon" type="image/x-icon" href="{% static 'img/logo.png' %}">
         <link rel="stylesheet"
               href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
               integrity="sha3184-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
@@ -19,10 +19,10 @@
               referrerpolicy="no-referrer" />
         <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.8/dist/htmx.min.js" integrity="sha384-/TgkGk7p307TH7EXJDuUlgG3Ce1UVolAOFopFekQkkXihi5u/6OCvVKyz1W+idaz" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/htmx-ext-response-targets@2.0.4" integrity="sha384-T41oglUPvXLGBVyRdZsVRxNWnOOqCynaPubjUVjxhsjFTKrFJGEMm3/0KGmNQ+Pg" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="{% static 'movies/css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
         <style>
         body {
-            background-image: url("{% static 'movies/img/background.jpg' %}");
+            background-image: url("{% static 'img/background.jpg' %}");
         }
         </style>
         {% block head %}{% endblock %}
@@ -37,7 +37,7 @@
                         <img class="logo bi me-2"
                              width="50"
                              aria-label="kinohub-logo"
-                             src="{% static "movies/img/logo.png" %}"
+                             src="{% static "img/logo.png" %}"
                              alt="">
                         <span class="fs-5 me-3 text-warning">Kinohub</span>
                     </a>
@@ -342,7 +342,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
     {% block scripts %}
     {% endblock scripts %}
-    <script src="{% static 'movies/js/main.js' %}"></script>
+    <script src="{% static 'js/base.js' %}"></script>
     {% block script %}{% endblock %}
 </body>
 </html>
