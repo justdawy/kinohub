@@ -1,4 +1,4 @@
-{% extends "movies/base.html" %}
+{% extends "base.html" %}
 {% block title %}{{ category.name }}{% endblock %}
 {% block main %}
     <!-- Filter Search -->
@@ -59,7 +59,7 @@
             {% if movies %}
                 <div class="row g-3 film-row">
                     {% for movie in movies %}
-                        {% include 'movies/index.html#movie-card' %}
+                        {% include 'movies/partials/_movie_card.html %}
                     {% endfor %}
                 </div>
             </div>
