@@ -7,17 +7,17 @@
         <div class="col-md-8">
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <div class="row align-items-center">
+                    <div class="row align-items-center justify-content-center">
                         <!-- Profile Image -->
-                        <div class="col-md-4 text-center mb-3 mb-md-0">
+                        <div class="col-6 col-md-8 col-lg-4 text-center mb-3 mb-md-0">
                             <img src="{{ user.profile_image.url }}" alt="Profile picture"
-                                class="img-fluid rounded-circle" style="height: 180px;
-                                            width: 180px">
+                                class="rounded-circle shadow-sm mb-3"
+                                style="height: 180px; width: 180px; object-fit: cover;">
                         </div>
                         <!-- User Info -->
                         <div class="col-md-8">
-                            <h3 class="mb-2">{{ user.username }}</h3>
-                            <p class="text-muted mb-1">E-mail: {{ user.email }}</p>
+                            <h3 class="fw-bold mb-1">{{ user.username }}</h3>
+                            <p class="text-muted small mb-3">E-mail: {{ user.email }}</p>
                             {% if user.first_name or user.last_name %}
                             <p class="mb-2">Повне ім'я: {{ user.first_name }} {{ user.last_name }}</p>
                             {% endif %}
@@ -27,6 +27,41 @@
                             {% endif %}
                             <p>Кількість відгуків: {{ user.reviews.count }}</p>
                             {% include 'users/partials/modals/_edit_profile.html' %}
+                        </div>
+                        <ul class="nav nav-tabs" id="profileTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active text-light" id="reviews-tab" data-bs-toggle="tab"
+                                    data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews"
+                                    aria-selected="true">Відгуки</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content py-3" id="myTabContent">
+                            <div class="tab-panel fade show active" id="reviews" role="tabpanel"
+                                aria-labelledby="reviews-tab">
+                                {% for review in reviews %}
+                                <div class="card mb-3">
+                                    <div class="row g-0">
+                                        <div class="col-12 col-lg-3">
+                                            <a href="{{ review.movie.get_absolute_url }}" class="text-decoration-none">
+                                                <img src="{{ review.movie.image_url }}"
+                                                    class="img-fluid poster-img rounded-start-md rounded-top-md-0">
+                                            </a>
+                                        </div>
+                                        <div class="col-12 col-lg-9">
+                                            <div class="card-body">
+                                                <a href="{{ review.movie.get_absolute_url }}" class="text-decoration-none text-warning">
+                                                    <h5 class="card-title">{{ review.movie.title }}</h5>
+                                                </a>
+                                                <p class="card-text">{{ review.content }}</p>
+                                                <p class="card-text">
+                                                    <small class="text-muted">{{ review.created_on }}</small>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>

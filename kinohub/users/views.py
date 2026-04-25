@@ -32,6 +32,13 @@ class AjaxPasswordResetView(PasswordResetView):
 class UserProfileTemplateView(LoginRequiredMixin, TemplateView):
     template_name = "users/profile.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["reviews"] = self.request.user.reviews.filter(
+            parent__isnull=True
+        ).order_by("-created_on")
+        return context
+
 
 @login_required
 @require_POST
