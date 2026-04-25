@@ -257,3 +257,39 @@ a.category-title {
 .like-icon:hover{
   transform: scale(1.2);
 }
+.nav-tabs .nav-link {
+    background: none !important;
+    border: none;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-tabs .nav-link.active {
+    border-bottom: 2px solid gold !important; /* The black underline */
+    color: goldenrod !important;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #ffc107;
+}
+
+.poster-img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    object-position: center;
+    /* On mobile: rounded top corners; on desktop: rounded left corners */
+    border-radius: 0.375rem 0.375rem 0 0;
+}
+
+@media (min-width: 768px) {
+    .poster-img {
+        height: 100%;
+        border-radius: 0.375rem 0 0 0.375rem;
+    }
+}
+@media (min-width: 992px) {
+    .poster-img {
+        height: 100%;
+        border-radius: 0.375rem 0 0 0.375rem;
+    }
+}
