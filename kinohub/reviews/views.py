@@ -19,7 +19,7 @@ def create_review(request):
 
     if not movieId or len(content) < 50:
         html = render_to_string(
-            "movies/movie_detail.html#errors",
+            "movies/partials/_comments_section.html#errors",
             {
                 "errors": {
                     "content": ["Текст відгукa повинен містити не менше 50 символів"]
@@ -38,7 +38,7 @@ def create_review(request):
             user=request.user, movie=movie, parent__isnull=True
         ).exists():
             html = render_to_string(
-                "movies/movie_detail.html#errors",
+                "movies/partials/_comments_section.html#errors",
                 {"errors": {"review": ["Ви вже залишили відгук до цього фільму"]}},
             )
             return HttpResponseBadRequest(html)
@@ -68,7 +68,9 @@ def get_reviews(request, movie_id):
     )
     paginator = Paginator(movie_reviews, settings.REVIEW_PAGE_SIZE)
     context = {"movie_reviews": paginator.page(page)}
-    return render(request, "movies/movie_detail.html#comments", context=context)
+    return render(
+        request, "movies/partials/_comments_section.html#comments", context=context
+    )
 
 
 @login_required
@@ -100,6 +102,6 @@ def review_vote(request, review_id):
 
     return render(
         request,
-        "movies/movie_detail.html#review_like_section",
+        "movies/partials/_comments_section.html#review_like_section",
         context={"review": review},
     )

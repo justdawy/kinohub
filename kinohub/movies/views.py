@@ -8,7 +8,7 @@ from movies.models import Actor, Category, Movie
 
 class SearchListView(generic.ListView):
     model = Movie
-    template_name = "movies/search.html"
+    template_name = "search.html"
     context_object_name = "movies"
     paginate_by = 24
 
@@ -186,4 +186,4 @@ class ActorDetailView(generic.DetailView):
 
 
 class AbuseTemplateView(generic.TemplateView):
-    template_name = "movies/right_holders.html"
+    template_name = "right_holders.html"
