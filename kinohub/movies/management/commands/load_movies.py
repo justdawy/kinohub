@@ -1,9 +1,8 @@
 import json
 import re
 from collections import defaultdict
-from pathlib import Path
 
-from django.apps import apps
+from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from django.db.utils import IntegrityError
@@ -31,8 +30,7 @@ class Command(BaseCommand):
     help = "Load all movies from json to database"
 
     def get_movies(self):
-        app_path = Path(apps.get_app_config("movies").path)
-        json_path = app_path / "static" / "movies" / "movies.json"
+        json_path = settings.BASE_DIR / "static" / "movies.json"
 
         movies = []
         with open(json_path, encoding="utf-8") as f:
