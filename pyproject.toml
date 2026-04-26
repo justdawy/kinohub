@@ -7,6 +7,7 @@ dependencies = [
     "django==6.0.2",
     "django-allauth>=65.14.1",
     "django-countries[pyuca]>=8.2.0",
+    "gunicorn>=25.3.0",
     "pillow>=12.1.1",
     "psycopg2-binary>=2.9.11",
     "python-decouple>=3.8",

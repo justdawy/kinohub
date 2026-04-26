@@ -18,8 +18,10 @@ COPY uv.lock .
 RUN uv sync --locked --no-dev
 
 COPY . /app
+RUN mkdir kinohub/staticfiles/
+RUN mkdir kinohub/mediafiles/
 EXPOSE 8000
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT [ "/entrypoint.sh" ]
+COPY entrypoint.prod.sh /entrypoint.prod.sh
+RUN chmod +x /entrypoint.prod.sh
+ENTRYPOINT [ "/entrypoint.prod.sh" ]
