@@ -2,7 +2,7 @@ from decouple import Csv
 
 from .base import *
 
-DEBUG = TEMPLATE_DEBUG = True
+DEBUG = TEMPLATE_DEBUG = False
 
 DATABASE_CONN_MAX_AGE = 600
 DATABASES["default"]["CONN_MAX_AGE"] = DATABASE_CONN_MAX_AGE

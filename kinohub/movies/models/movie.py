@@ -46,7 +46,9 @@ class Movie(models.Model):
     )
     title = models.CharField(max_length=255, verbose_name="Українська назва")
     slug = models.SlugField(blank=True, max_length=255, verbose_name="URL-ім'я")
-    en_title = models.CharField(max_length=255, verbose_name="Англійська назва")
+    en_title = models.CharField(
+        max_length=255, verbose_name="Англійська назва", blank=True, null=True
+    )
     duration = models.CharField(
         max_length=20, blank=True, null=True, verbose_name="Тривалість фільму"
     )
@@ -113,7 +115,9 @@ class Screenshot(models.Model):
         on_delete=models.CASCADE,
         verbose_name="Фільм",
     )
-    screenshot_url = models.URLField(verbose_name="URL Ha Кадр із фільму")
+    screenshot_url = models.URLField(
+        verbose_name="URL Ha Кадр із фільму", max_length=500
+    )
 
     class Meta:
         verbose_name = "Кадри з фільму"

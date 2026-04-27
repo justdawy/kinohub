@@ -89,9 +89,12 @@ class Command(BaseCommand):
     def get_or_create_directors(self, director_names):
         directors = []
         for name in director_names:
-            directors.append(
-                Director.objects.get_or_create(name=name, slug=slugify(name))[0]
-            )
+            try:
+                directors.append(
+                    Director.objects.get_or_create(name=name, slug=slugify(name))[0]
+                )
+            except IntegrityError:
+                directors.append(Director.objects.get(slug=slugify(name)))
         return directors
 
     def get_or_create_movie(
@@ -145,10 +148,13 @@ class Command(BaseCommand):
     def process_streams(self, streams):
         voices = defaultdict(list)
         for stream in streams:
+            if not stream.get("stream_url"):
+                continue
             if stream["voice"] is not None:
                 voices[stream["voice"]].append(stream)
             else:
                 voices["default"].append(stream)
+
         players = []
         for voice in voices:
             player = {
@@ -156,17 +162,20 @@ class Command(BaseCommand):
                 "items": [
                     {
                         "url": item["stream_url"],
-                        "poster_url": item["poster_url"],
-                        "subtitles": self.process_subtitles(item["subtitle"]),
+                        "poster_url": item.get("poster_url"),
+                        "subtitles": self.process_subtitles(item.get("subtitle")),
                     }
                     for item in voices[voice]
                 ],
             }
-            players.append(player)
+            if player["items"]:
+                players.append(player)
 
         return players
 
     def process_subtitles(self, subtitles):
+        if not subtitles:
+            return {}
         subs = {}
         matches = re.findall(r"\[(.*?)\](https?://[^\s,]+)", subtitles)
         for lang, url in matches:
@@ -228,9 +237,15 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **kwargs):
-        # load all movies in db
         movies = self.get_movies()
-        with transaction.atomic():
-            for movie in tqdm(movies, desc="Processing", unit="movie"):
-                self.proccess_movie(movie)
-        self.stdout.write(self.style.SUCCESS("🏁 DONE"))
+        failed = 0
+        for movie in tqdm(movies, desc="Processing", unit="movie"):
+            try:
+                with transaction.atomic():
+                    self.proccess_movie(movie)
+            except Exception as e:
+                failed += 1
+                self.stdout.write(
+                    self.style.WARNING(f"Skipped '{movie.get('uk_title')}': {e}")
+                )
+        self.stdout.write(self.style.SUCCESS(f"🏁 DONE — {failed} skipped"))
