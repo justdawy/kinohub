@@ -46,13 +46,15 @@
                             <span class="text-warning">{{ movie.age_rating }}</span>
                         </p>
                     {% endif %}
-                    <p>
-                        <span class="text-muted">Країна:</span>
-                        {% for country in movie.country %}
-                            <a class="text-warning text-decoration-none">{{ country.name }}</a>
-                            {% if not forloop.last %},{% endif %}
-                        {% endfor %}
-                    </p>
+                    {% if movie.country %}
+                        <p>
+                            <span class="text-muted">Країна:</span>
+                            {% for country in movie.country %}
+                                <a class="text-warning text-decoration-none">{{ country.name }}</a>
+                                {% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        </p>
+                    {% endif %}
                     <p>
                         <span class="text-muted">Жанр:</span>
                         {% for genre in movie.genres.all %}
