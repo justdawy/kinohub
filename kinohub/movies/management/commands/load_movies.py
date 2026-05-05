@@ -207,8 +207,8 @@ class Command(BaseCommand):
         if movie.get("actors"):
             actors = self.get_or_create_actors(movie["actors"])
         directors = []
-        if movie.get("director"):
-            directors = self.get_or_create_directors(movie["director"])
+        if movie.get("directors"):
+            directors = self.get_or_create_directors(movie["directors"])
         players = []
         if movie.get("streams"):
             players = self.process_streams(movie["streams"])
