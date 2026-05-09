@@ -1,7 +1,8 @@
 <p align="center">
 	<!-- Title -->
 	<img src="https://i.ibb.co/76pC0Gs/logo.png" width="128"/><br>
-	<b>🇺🇦 Kinohub</b>
+	<b>🇺🇦 Kinohub</b><br>
+	<a href="https://kinohub.justdawy.pp.ua/">🚀 Live Demo</a>
 </p>
 <p align="center">
 <img src="https://img.shields.io/github/languages/code-size/justdawy/kinohub?style=for-the-badge"/>
